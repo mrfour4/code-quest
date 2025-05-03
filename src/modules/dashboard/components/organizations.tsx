@@ -3,7 +3,7 @@ import { Users } from "lucide-react";
 
 export const Organizations = () => {
     return (
-        <div className="flex items-center">
+        <div className="flex items-center lg:hidden">
             <Users className="text-muted-foreground ml-3 size-4" />
             <OrganizationSwitcher
                 appearance={{

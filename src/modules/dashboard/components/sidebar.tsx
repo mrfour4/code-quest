@@ -1,12 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useFilters } from "@/hooks/use-filters";
 import { cn } from "@/lib/utils";
 import { useAuth, useClerk, useOrganizationList } from "@clerk/nextjs";
-import { FileText, Folders, Plus, Settings } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { NAVBAR_ITEMS } from "../constants";
+import {
+    Building2,
+    FileText,
+    Folders,
+    Layers,
+    Plus,
+    Settings,
+} from "lucide-react";
+import { DOCUMENT_TYPES } from "../constants";
+import { DocumentType } from "../types";
+import { SidebarItem } from "./sidebar-item";
 
 export const Sidebar = () => {
     const { openOrganizationProfile, openCreateOrganization } = useClerk();
@@ -16,11 +24,16 @@ export const Sidebar = () => {
         },
     });
 
+    const { filters, setFilters } = useFilters();
+
     const { orgId } = useAuth();
-    const pathname = usePathname();
+
+    const onTypeChange = (type: DocumentType | null) => {
+        setFilters({ ...filters, type });
+    };
 
     if (!isLoaded) {
-        return null;
+        return <div>loading...</div>;
     }
 
     const orgs = userMemberships.data.map((mem) => ({
@@ -37,19 +50,20 @@ export const Sidebar = () => {
                 </p>
 
                 <div className="space-y-1">
-                    {NAVBAR_ITEMS.map((item) => (
-                        <Link
-                            href={item.href}
-                            key={item.href}
-                            className={cn(
-                                "hover:bg-accent hover:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-3 py-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-                                pathname === item.href &&
-                                    "bg-accent text-accent-foreground",
-                            )}
-                        >
-                            <FileText />
-                            {item.name}
-                        </Link>
+                    <SidebarItem
+                        title="All Documents"
+                        icon={Layers}
+                        isActive={filters.type === null}
+                        onClick={() => onTypeChange(null)}
+                    />
+                    {DOCUMENT_TYPES.map((type) => (
+                        <SidebarItem
+                            key={type}
+                            title={type}
+                            icon={FileText}
+                            isActive={filters.type === type}
+                            onClick={() => onTypeChange(type)}
+                        />
                     ))}
                 </div>
                 <div className="flex w-full justify-between">
@@ -62,7 +76,7 @@ export const Sidebar = () => {
                         variant="ghost"
                         onClick={() => {
                             openCreateOrganization({
-                                afterCreateOrganizationUrl: "/draft",
+                                afterCreateOrganizationUrl: "/",
                             });
                         }}
                     >
@@ -71,24 +85,28 @@ export const Sidebar = () => {
                 </div>
 
                 <div className="space-y-1">
+                    <SidebarItem
+                        title="All Organizations"
+                        icon={Building2}
+                        isActive={!orgId}
+                        onClick={() => setActive({ organization: null })}
+                    />
                     {orgs.map((item) => (
-                        <div
+                        <SidebarItem
                             key={item.id}
-                            className={cn(
-                                "group hover:bg-accent hover:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-3 py-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-                                orgId === item.id &&
-                                    "bg-accent text-accent-foreground",
-                            )}
+                            title={item.name}
+                            icon={Folders}
+                            isActive={orgId === item.id}
                             onClick={() => setActive({ organization: item.id })}
                         >
-                            <div className="mr-auto flex items-center gap-2">
-                                <Folders />
-                                {item.name}
-                            </div>
                             <button
-                                className="hidden group-hover:block hover:cursor-pointer"
+                                className={cn(
+                                    "hidden hover:cursor-pointer",
+                                    orgId && "group-hover:block",
+                                )}
                                 onClick={(e) => {
                                     e.stopPropagation();
+
                                     openOrganizationProfile({
                                         afterLeaveOrganizationUrl: "/",
                                     });
@@ -96,7 +114,7 @@ export const Sidebar = () => {
                             >
                                 <Settings />
                             </button>
-                        </div>
+                        </SidebarItem>
                     ))}
                 </div>
             </div>

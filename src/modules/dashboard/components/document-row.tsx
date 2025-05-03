@@ -1,0 +1,80 @@
+import { ConfirmDialog } from "@/components/confirm-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { formatDistanceToNow } from "date-fns";
+import { PencilLine, Trash } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Doc } from "../../../../convex/_generated/dataModel";
+import { useDeleteDocument } from "../api/documents";
+import { DOCUMENT_ICON_MAP } from "../constants";
+
+type Props = {
+    doc: Doc<"documents">;
+};
+
+export const DocumentRow = ({ doc }: Props) => {
+    const Icon = DOCUMENT_ICON_MAP[doc.type] || PencilLine;
+    const { mutate, isPending } = useDeleteDocument();
+    const [open, setOpen] = useState(false);
+
+    const onRemove = () => {
+        mutate(
+            { id: doc._id },
+            {
+                onSuccess: () => {
+                    toast.success("Document deleted successfully");
+                    setOpen(false);
+                },
+                onError: (error) => {
+                    console.error("Error deleting document:", error);
+                    toast.error("Error deleting document");
+                },
+            },
+        );
+    };
+
+    return (
+        <Link
+            className="flex h-20 w-full items-center border p-4"
+            href={`/documents/${doc._id}`}
+        >
+            <div className="flex w-full items-center gap-x-3">
+                <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
+                    <Icon className="size-5 text-white" />
+                </div>
+                <div className="flex flex-col gap-y-0.5">
+                    <div className="flex items-center gap-x-1.5">
+                        <p className="text-sm font-medium">{doc.title}</p>
+                        <Badge
+                            variant="secondary"
+                            className="text-xs capitalize"
+                        >
+                            {doc.orgName}
+                        </Badge>
+                    </div>
+                    <p className="text-muted-foreground text-xs">
+                        Edited {formatDistanceToNow(doc.updatedAt)}
+                    </p>
+                </div>
+            </div>
+            <Button
+                size="icon"
+                variant="ghost"
+                className="ml-auto"
+                disabled={isPending}
+                onClick={() => setOpen(true)}
+            >
+                <Trash />
+            </Button>
+            <ConfirmDialog
+                open={open}
+                onOpenChange={setOpen}
+                disabled={isPending}
+                onConfirm={onRemove}
+                onCancel={() => setOpen(false)}
+            />
+        </Link>
+    );
+};

@@ -11,7 +11,9 @@ export const Logo = () => {
                 height={24}
                 className="size-6 object-cover"
             />
-            <span className="text-lg font-bold">Code Quest</span>
+            <span className="text-lg font-bold whitespace-nowrap">
+                Code Quest
+            </span>
         </Link>
     );
 };
