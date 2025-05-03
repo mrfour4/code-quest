@@ -25,7 +25,7 @@ export const NewDocButton = () => {
             },
             {
                 onSuccess: (id) => {
-                    router.push(`/documents/${id}`);
+                    router.push(`/document/${id}`);
                     toast.success("Document created");
                 },
                 onError: (error) => {

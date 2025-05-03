@@ -22,7 +22,7 @@ export const update = mutation({
     args: {
         id: v.id("documents"),
         title: v.string(),
-        status: v.union(v.literal("draft"), v.literal("published")),
+        type: v.optional(v.union(v.literal("draft"), v.literal("published"))),
     },
     handler: async (ctx, args) => {
         const { id, ...data } = args;

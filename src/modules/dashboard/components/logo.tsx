@@ -3,7 +3,10 @@ import Link from "next/link";
 
 export const Logo = () => {
     return (
-        <Link href="/" className="flex items-center gap-2">
+        <Link
+            href="/"
+            className="mr-4 flex items-center gap-2 hover:opacity-80"
+        >
             <Image
                 src="/logo.svg"
                 alt="Code Quest Logo"

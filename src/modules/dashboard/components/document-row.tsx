@@ -38,7 +38,7 @@ export const DocumentRow = ({ doc }: Props) => {
     return (
         <Link
             className="flex h-20 w-full items-center border p-4"
-            href={`/documents/${doc._id}`}
+            href={`/document/${doc._id}`}
         >
             <div className="flex w-full items-center gap-x-3">
                 <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
