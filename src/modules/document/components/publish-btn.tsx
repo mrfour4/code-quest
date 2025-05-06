@@ -27,6 +27,7 @@ export const PublishButton = ({ documentId, type }: Props) => {
                     toast.error("Failed to update document.");
                 },
                 onSuccess() {
+                    // TODO: Refactor this when use ID token instead of Access token
                     window.location.reload();
 
                     toast.success(

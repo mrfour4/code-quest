@@ -1,24 +1,31 @@
-// Define Liveblocks types for your application
-// https://liveblocks.io/docs/api-reference/liveblocks-react#Typing-your-data
+import { LiveMap, LiveObject } from "@liveblocks/client";
+
+export type Note = LiveObject<{
+    x: number;
+    y: number;
+    text: string;
+    selectedBy: Liveblocks["UserMeta"]["info"] | null;
+    id: string;
+}>;
+
+export type Notes = LiveMap<string, Note>;
+
 declare global {
     interface Liveblocks {
-        // Each user's Presence, for useMyPresence, useOthers, etc.
         Presence: {
-            // Example, real-time cursor coordinates
-            // cursor: { x: number; y: number };
+            cursor: { x: number; y: number } | null; // Whiteboard
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            presence: any; // Canvas
         };
 
-        // The Storage tree for the room, for useMutation, useStorage, etc.
         Storage: {
-            // Example, a conflict-free list
-            // animals: LiveList<string>;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            records: LiveMap<string, any>; // Canvas
         };
 
-        // Custom user info set when authenticating with a secret key
         UserMeta: {
             id: string;
             info: {
-                // Example properties, for useSelf, useUser, useOthers, etc.
                 name: string;
                 avatar: string;
                 color: string;

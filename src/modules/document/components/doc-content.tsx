@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Canvas } from "@/modules/canvas/components/canvas";
 import { TextEditor } from "@/modules/text-editor";
 import { useState } from "react";
 import { CodeEditor } from "./code-editor";
@@ -58,8 +59,11 @@ export const DocumentContent = () => {
                             </ResizablePanel>
                         </ResizablePanelGroup>
                     </TabsContent>
-                    <TabsContent value={TabValue.Canvas}>
-                        Change your password here.
+                    <TabsContent
+                        value={TabValue.Canvas}
+                        className="dark:bg-[#101011]"
+                    >
+                        <Canvas />
                     </TabsContent>
                 </Tabs>
             </ResizablePanel>
