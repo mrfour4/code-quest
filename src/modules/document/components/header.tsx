@@ -5,8 +5,8 @@ import { Logo } from "@/modules/dashboard/components/logo";
 import { UserButton } from "@clerk/nextjs";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { Package2, Upload } from "lucide-react";
-import { useState } from "react";
 import { api } from "../../../../convex/_generated/api";
+import { Role } from "../../../../convex/documents";
 import { DocumentTitle } from "./doc-title";
 
 type Props = {
@@ -15,8 +15,6 @@ type Props = {
 
 export const Header = ({ preloadedDocument }: Props) => {
     const document = usePreloadedQuery(preloadedDocument);
-    const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("");
 
     if (!document) {
         return <div className="flex h-16 border-b">Loading...</div>;
@@ -28,7 +26,11 @@ export const Header = ({ preloadedDocument }: Props) => {
                 <Logo />
 
                 <div className="w-1/3 px-4">
-                    <DocumentTitle title={document.title} id={document._id} />
+                    <DocumentTitle
+                        title={document.title}
+                        id={document._id}
+                        canEdit={document.role === Role.Admin}
+                    />
                 </div>
 
                 <div className="flex items-center gap-x-3">

@@ -17,12 +17,7 @@ export const NewDocButton = () => {
         if (!userId || isPending) return;
 
         mutate(
-            {
-                title: "New document",
-                orgId: orgId ?? "self",
-                orgName: organization?.name ?? "Personal",
-                authorId: userId,
-            },
+            { title: "New document" },
             {
                 onSuccess: (id) => {
                     router.push(`/document/${id}`);

@@ -5,11 +5,12 @@ import { toast } from "sonner";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 type Props = {
-    title: string;
     id: Id<"documents">;
+    title: string;
+    canEdit?: boolean;
 };
 
-export const DocumentTitle = ({ id, title }: Props) => {
+export const DocumentTitle = ({ id, title, canEdit = false }: Props) => {
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(title);
 
@@ -54,10 +55,12 @@ export const DocumentTitle = ({ id, title }: Props) => {
     return (
         <div className="flex h-full items-center justify-center gap-x-2">
             <h1 className="truncate font-semibold capitalize">{title}</h1>
-            <SquarePen
-                className="text-muted-foreground size-4 shrink-0 cursor-pointer hover:text-white"
-                onClick={() => setIsEditing(true)}
-            />
+            {canEdit && (
+                <SquarePen
+                    className="text-muted-foreground size-4 shrink-0 cursor-pointer hover:text-white"
+                    onClick={() => setIsEditing(true)}
+                />
+            )}
         </div>
     );
 };

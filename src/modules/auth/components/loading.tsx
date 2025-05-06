@@ -1,15 +1,14 @@
-import Image from "next/image";
+import { Loader } from "lucide-react";
 
-export const Loading = () => {
+type Props = {
+    label?: string;
+};
+
+export const FullscreenLoader = ({ label }: Props) => {
     return (
-        <div className="size-full flex flex-col justify-center items-center">
-            <Image
-                src="/logo.svg"
-                alt="Code Quest Logo"
-                width={120}
-                height={120}
-                className="animate-pulse duration-700"
-            />
+        <div className="flex min-h-screen flex-col items-center justify-center gap-2">
+            <Loader className="text-muted-foreground size-6 animate-spin" />
+            {label && <p className="text-muted-foreground text-sm">{label}</p>}
         </div>
     );
 };

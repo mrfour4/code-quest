@@ -1,6 +1,7 @@
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
 import { PencilLine, Trash } from "lucide-react";
 import Link from "next/link";
@@ -19,6 +20,10 @@ export const DocumentRow = ({ doc }: Props) => {
     const { mutate, isPending } = useDeleteDocument();
     const [open, setOpen] = useState(false);
 
+    const { userId, orgRole } = useAuth();
+
+    const canRemove = userId === doc.authorId || orgRole === doc.orgId;
+
     const onRemove = () => {
         mutate(
             { id: doc._id },
@@ -36,38 +41,46 @@ export const DocumentRow = ({ doc }: Props) => {
     };
 
     return (
-        <Link
-            className="flex h-20 w-full items-center border p-4"
-            href={`/document/${doc._id}`}
-        >
-            <div className="flex w-full items-center gap-x-3">
-                <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
-                    <Icon className="size-5 text-white" />
-                </div>
-                <div className="flex flex-col gap-y-0.5">
-                    <div className="flex items-center gap-x-1.5">
-                        <p className="text-sm font-medium">{doc.title}</p>
-                        <Badge
-                            variant="secondary"
-                            className="text-xs capitalize"
-                        >
-                            {doc.orgName}
-                        </Badge>
-                    </div>
-                    <p className="text-muted-foreground text-xs">
-                        Edited {formatDistanceToNow(doc.updatedAt)}
-                    </p>
-                </div>
-            </div>
-            <Button
-                size="icon"
-                variant="ghost"
-                className="ml-auto"
-                disabled={isPending}
-                onClick={() => setOpen(true)}
+        <>
+            <Link
+                className="flex h-20 w-full items-center border p-4"
+                href={`/document/${doc._id}`}
             >
-                <Trash />
-            </Button>
+                <div className="flex w-full items-center gap-x-3">
+                    <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
+                        <Icon className="size-5 text-white" />
+                    </div>
+                    <div className="flex flex-col gap-y-0.5">
+                        <div className="flex items-center gap-x-1.5">
+                            <p className="text-sm font-medium">{doc.title}</p>
+                            <Badge
+                                variant="secondary"
+                                className="text-xs capitalize"
+                            >
+                                {doc.orgName}
+                            </Badge>
+                        </div>
+                        <p className="text-muted-foreground text-xs">
+                            Edited {formatDistanceToNow(doc.updatedAt)}
+                        </p>
+                    </div>
+                </div>
+                {canRemove && (
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="ml-auto"
+                        disabled={isPending}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setOpen(true);
+                        }}
+                    >
+                        <Trash className="text-destructive" />
+                    </Button>
+                )}
+            </Link>
             <ConfirmDialog
                 open={open}
                 onOpenChange={setOpen}
@@ -75,6 +88,6 @@ export const DocumentRow = ({ doc }: Props) => {
                 onConfirm={onRemove}
                 onCancel={() => setOpen(false)}
             />
-        </Link>
+        </>
     );
 };

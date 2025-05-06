@@ -33,7 +33,7 @@ export default function RootLayout({
                     <ConvexClientProvider>
                         <NuqsAdapter>{children}</NuqsAdapter>
                     </ConvexClientProvider>
-                    <Toaster />
+                    <Toaster richColors />
                 </ThemeProvider>
             </body>
         </html>
