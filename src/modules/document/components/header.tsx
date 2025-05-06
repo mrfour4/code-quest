@@ -1,13 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Logo } from "@/modules/dashboard/components/logo";
-import { UserButton } from "@clerk/nextjs";
+import { Inbox } from "@/modules/inbox";
+import { AvatarStack } from "@/modules/room/components/avatar-stack";
+import { useOrganizationList } from "@clerk/nextjs";
 import { Preloaded, usePreloadedQuery } from "convex/react";
-import { Package2, Upload } from "lucide-react";
+import { useEffect } from "react";
 import { api } from "../../../../convex/_generated/api";
 import { Role } from "../../../../convex/documents";
 import { DocumentTitle } from "./doc-title";
+import { PublishButton } from "./publish-btn";
 
 type Props = {
     preloadedDocument: Preloaded<typeof api.documents.get>;
@@ -15,6 +17,11 @@ type Props = {
 
 export const Header = ({ preloadedDocument }: Props) => {
     const document = usePreloadedQuery(preloadedDocument);
+    const { setActive } = useOrganizationList();
+
+    useEffect(() => {
+        setActive?.({ organization: document.orgId });
+    }, [document.orgId, setActive]);
 
     if (!document) {
         return <div className="flex h-16 border-b">Loading...</div>;
@@ -34,14 +41,14 @@ export const Header = ({ preloadedDocument }: Props) => {
                 </div>
 
                 <div className="flex items-center gap-x-3">
-                    <UserButton />
-                    <Button>
-                        <Upload />
-                        Share
-                    </Button>
-                    <Button variant="secondary" size="icon">
-                        <Package2 />
-                    </Button>
+                    <AvatarStack />
+                    {document.role === Role.Admin && (
+                        <PublishButton
+                            documentId={document._id}
+                            type={document.type}
+                        />
+                    )}
+                    <Inbox />
                 </div>
             </div>
         </header>

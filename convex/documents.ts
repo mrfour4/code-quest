@@ -1,22 +1,27 @@
+import { filter } from "convex-helpers/server/filter";
+import { getAllOrThrow } from "convex-helpers/server/relationships";
 import { paginationOptsValidator, UserIdentity } from "convex/server";
 import { ConvexError, v } from "convex/values";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, QueryCtx } from "./_generated/server";
-
-import { filter } from "convex-helpers/server/filter";
 
 export enum Role {
     Admin = "org:admin",
     Member = "org:member",
 }
+
+export type Organizations = {
+    [key: string]: Role | undefined;
+};
+
 export interface User extends UserIdentity {
     orgId: string;
     orgName: string;
 }
 
-export type Organizations = {
-    [key: string]: Role | undefined;
-};
+export interface Document extends Doc<"documents"> {
+    role: Role;
+}
 
 export const create = mutation({
     args: {
@@ -82,6 +87,18 @@ export const get = query({
     },
 });
 
+export const getMany = query({
+    args: { documentIds: v.array(v.id("documents")) },
+    handler: async (ctx, { documentIds }) => {
+        const documents = await getAllOrThrow(ctx.db, documentIds);
+
+        return documents.map((doc) => ({
+            id: doc._id,
+            name: doc.title,
+        }));
+    },
+});
+
 export const list = query({
     args: {
         orgId: v.optional(v.string()),
@@ -116,16 +133,20 @@ export const list = query({
         return {
             ...results,
             page: results.page
-                .filter((doc) => {
+                .map((doc) => {
                     const { authorId, orgId } = doc;
 
+                    let role;
+
                     if (user.subject === authorId) {
-                        return true;
+                        role = Role.Admin;
+                    } else {
+                        role = user.orgs[orgId];
                     }
 
-                    const role = user.orgs[orgId];
-                    return !!role;
+                    return role ? { ...doc, role } : null;
                 })
+                .filter((doc) => !!doc)
                 .sort((a, b) => b.updatedAt - a.updatedAt),
         };
     },

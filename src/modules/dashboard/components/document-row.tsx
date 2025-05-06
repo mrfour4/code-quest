@@ -1,18 +1,17 @@
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
 import { PencilLine, Trash } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Doc } from "../../../../convex/_generated/dataModel";
+import { Document, Role } from "../../../../convex/documents";
 import { useDeleteDocument } from "../api/documents";
 import { DOCUMENT_ICON_MAP } from "../constants";
 
 type Props = {
-    doc: Doc<"documents">;
+    doc: Document;
 };
 
 export const DocumentRow = ({ doc }: Props) => {
@@ -20,9 +19,7 @@ export const DocumentRow = ({ doc }: Props) => {
     const { mutate, isPending } = useDeleteDocument();
     const [open, setOpen] = useState(false);
 
-    const { userId, orgRole } = useAuth();
-
-    const canRemove = userId === doc.authorId || orgRole === doc.orgId;
+    const canRemove = doc.role === Role.Admin;
 
     const onRemove = () => {
         mutate(

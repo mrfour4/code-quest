@@ -7,10 +7,10 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TextEditor } from "@/modules/text-editor";
 import { useState } from "react";
 import { CodeEditor } from "./code-editor";
 import { InputCodeSection } from "./input-code-section";
-import { TextEditor } from "./text-editor";
 import { TabValue } from "./types";
 
 export const DocumentContent = () => {
