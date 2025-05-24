@@ -125,14 +125,8 @@ export const TextEditorContent = ({ size }: Props) => {
                                 open={openStyle}
                                 onOpenChange={setOpenStyle}
                             />
-                            {/* <MathSelector />
                             <Separator orientation="vertical" />
-                            <TextButtons /> */}
-                            <Separator orientation="vertical" />
-                            <ColorSelector
-                                open={openColor}
-                                onOpenChange={setOpenColor}
-                            />
+                            <ColorSelector />
                             <Separator orientation="vertical" />
                         </GenerativeMenuSwitch>
                     </EditorContent>
