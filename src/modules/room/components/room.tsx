@@ -1,6 +1,7 @@
 "use client";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LiveMap } from "@liveblocks/client";
 import {
     ClientSideSuspense,
     LiveblocksProvider,
@@ -46,8 +47,18 @@ export function Room({ children, documentId }: Props) {
                 return await getDocuments(roomIds);
             }}
         >
-            <RoomProvider id={documentId}>
-                <ClientSideSuspense fallback={<div>Loading…</div>}>
+            <RoomProvider
+                id={documentId}
+                initialPresence={{ cursor: null, presence: null }}
+                initialStorage={{ records: new LiveMap() }}
+            >
+                <ClientSideSuspense
+                    fallback={
+                        <div className="p-12 px-8 text-xl text-red-600 sm:px-12">
+                            Loading…
+                        </div>
+                    }
+                >
                     <TooltipProvider delayDuration={0}>
                         {children}
                     </TooltipProvider>

@@ -8,7 +8,6 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "@liveblocks/react-tiptap/styles.css";
 import "@liveblocks/react-ui/styles.css";
 import "@liveblocks/react-ui/styles/dark/attributes.css";
-
 import "../styles/globals.css";
 import "../styles/prosemirror.css";
 import "../styles/text-editor.css";

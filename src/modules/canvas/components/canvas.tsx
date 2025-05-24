@@ -6,7 +6,7 @@ const CanvasComponent = dynamic(
     () => import("./canvas-content").then((mod) => mod.CanvasContent),
     {
         ssr: false,
-        loading: () => <div>Loading...</div>,
+        loading: () => <div>Canvas Loading...</div>,
     },
 );
 

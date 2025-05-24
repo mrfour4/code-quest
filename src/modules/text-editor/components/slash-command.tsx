@@ -1,13 +1,13 @@
 import {
     CheckSquare,
     Code,
+    FileIcon,
     Heading1,
     Heading2,
     Heading3,
     ImageIcon,
     List,
     ListOrdered,
-    MessageSquarePlus,
     Text,
     TextQuote,
     Twitter,
@@ -17,15 +17,6 @@ import { Command, createSuggestionItems, renderItems } from "novel";
 import { uploadFn } from "../actions/image-upload";
 
 export const suggestionItems = createSuggestionItems([
-    {
-        title: "Send Feedback",
-        description: "Let us know how we can improve.",
-        icon: <MessageSquarePlus size={18} />,
-        command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).run();
-            window.open("/feedback", "_blank");
-        },
-    },
     {
         title: "Text",
         description: "Just start typing with plain text.",
@@ -147,6 +138,32 @@ export const suggestionItems = createSuggestionItems([
                     const file = input.files[0];
                     const pos = editor.view.state.selection.from;
                     uploadFn(file, editor.view, pos);
+                }
+            };
+            input.click();
+        },
+    },
+    {
+        title: "File",
+        description: "Upload an file from your computer.",
+        searchTerms: ["file", "document", "attachment"],
+        icon: <FileIcon size={18} />,
+        command: ({ editor, range }) => {
+            editor.chain().focus().deleteRange(range).run();
+            // upload file
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "*"; // Accept all file types
+            input.onchange = async () => {
+                if (input.files?.length) {
+                    const file = input.files[0];
+                    const fileUrl =
+                        "https://example.com/files/" +
+                        encodeURIComponent(file.name);
+
+                    editor.commands.insertContent(
+                        `🔗 <a href="${fileUrl}" target="_blank" rel="noopener noreferrer">i${file.name}</a>`,
+                    );
                 }
             };
             input.click();
