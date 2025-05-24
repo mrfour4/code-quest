@@ -1,7 +1,6 @@
 "use client";
 
-import { SignInForm } from "@/modules/auth/components/sign-in-form";
-import { ClerkProvider, useAuth } from "@clerk/nextjs";
+import { ClerkProvider, RedirectToSignIn, useAuth } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +26,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
                 <QueryClientProvider client={queryClient}>
                     <Unauthenticated>
-                        <SignInForm />
+                        <RedirectToSignIn />
                     </Unauthenticated>
 
                     {children}

@@ -8,7 +8,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Canvas } from "@/modules/canvas/components/canvas";
-import { TextEditor } from "@/modules/text-editor";
+import { TextEditor } from "@/modules/text-editor/components/text-editor";
 import { useState } from "react";
 import { CodeEditor } from "./code-editor";
 import { InputCodeSection } from "./input-code-section";
@@ -16,11 +16,17 @@ import { TabValue } from "./types";
 
 export const DocumentContent = () => {
     const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);
+    const [sizes, setSizes] = useState<number[]>([]);
 
     return (
-        <ResizablePanelGroup direction="horizontal">
+        <ResizablePanelGroup
+            direction="horizontal"
+            onLayout={(sizes) => {
+                setSizes(sizes);
+            }}
+        >
             <ResizablePanel defaultSize={50} minSize={30}>
-                <TextEditor />
+                <TextEditor size={sizes[0]} />
             </ResizablePanel>
             <ResizableHandle withHandle className="mx-2" />
             <ResizablePanel defaultSize={50} minSize={30}>
