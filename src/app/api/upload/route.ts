@@ -1,4 +1,5 @@
 import { put } from "@vercel/blob";
+import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
     const ext = `.${contentType.split("/")[1] || "bin"}`;
 
     // always create unique filename
-    const finalName = `${filename.replace(/\.[^/.]+$/, "")}-${Date.now()}${ext}`;
+    const finalName = `${filename.replace(/\.[^/.]+$/, "")}-${nanoid()}${ext}`;
 
     const blob = await put(finalName, file, {
         contentType,

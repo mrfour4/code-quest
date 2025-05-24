@@ -2,9 +2,15 @@ import { type EditorView } from "@tiptap/pm/view";
 import { marked } from "marked";
 import { handleImagePaste } from "novel";
 import { DOMParser as PMDOMParser } from "prosemirror-model";
-import { uploadFn } from "../actions/image-upload";
+import { uploadImageFn } from "../actions/image-upload";
 
-export const onPast = (view: EditorView, event: ClipboardEvent) => {
+export const onPaste = (view: EditorView, event: ClipboardEvent) => {
+    const hasImage = handleImagePaste(view, event, uploadImageFn);
+
+    if (hasImage) {
+        return true;
+    }
+
     const clipboard = event.clipboardData;
 
     if (!clipboard) {
@@ -27,13 +33,6 @@ export const onPast = (view: EditorView, event: ClipboardEvent) => {
         );
         view.dispatch(tr);
         return true;
-    }
-
-    const hasImage = Array.from(clipboard.items).some((item) =>
-        item.type.startsWith("image/"),
-    );
-    if (hasImage) {
-        return handleImagePaste(view, event, uploadFn);
     }
 
     const isMarkdown =

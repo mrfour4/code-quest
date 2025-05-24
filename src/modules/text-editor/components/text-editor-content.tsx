@@ -16,7 +16,7 @@ import {
     handleImageDrop,
 } from "novel";
 import { useState } from "react";
-import { uploadFn } from "../actions/image-upload";
+import { uploadImageFn } from "../actions/image-upload";
 import { defaultExtensions } from "../lib/extensions";
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { ColorSelector } from "./selectors/color-selector";
@@ -26,7 +26,7 @@ import { NodeSelector } from "./selectors/node-selector";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
 
-import { onPast } from "../lib/content-paste";
+import { onPaste } from "../lib/content-paste";
 
 type Props = {
     size: number;
@@ -65,9 +65,14 @@ export const TextEditorContent = ({ size }: Props) => {
                                 keydown: (_view, event) =>
                                     handleCommandNavigation(event),
                             },
-                            handlePaste: (view, event) => onPast(view, event),
+                            handlePaste: (view, event) => onPaste(view, event),
                             handleDrop: (view, event, _slice, moved) =>
-                                handleImageDrop(view, event, moved, uploadFn),
+                                handleImageDrop(
+                                    view,
+                                    event,
+                                    moved,
+                                    uploadImageFn,
+                                ),
                             attributes: {
                                 class: "prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
                             },
