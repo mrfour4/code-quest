@@ -14,17 +14,18 @@ export async function POST(req: Request) {
     }
 
     const file = req.body || "";
-    const filename = req.headers.get("x-vercel-filename") || "file.txt";
-    const contentType = req.headers.get("content-type") || "text/plain";
-    const fileType = `.${contentType.split("/")[1]}`;
+    const filename = req.headers.get("x-vercel-filename") || "file";
+    const contentType =
+        req.headers.get("content-type") || "application/octet-stream";
+    const ext = `.${contentType.split("/")[1] || "bin"}`;
 
-    // construct final filename based on content-type if not provided
-    const finalName = filename.includes(fileType)
-        ? filename
-        : `${filename}${fileType}`;
+    // always create unique filename
+    const finalName = `${filename.replace(/\.[^/.]+$/, "")}-${Date.now()}${ext}`;
+
     const blob = await put(finalName, file, {
         contentType,
         access: "public",
+        allowOverwrite: false, // vì đã có tên unique, không cần ghi đè
     });
 
     return NextResponse.json(blob);

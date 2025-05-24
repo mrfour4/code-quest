@@ -14,7 +14,6 @@ import {
     ImageResizer,
     handleCommandNavigation,
     handleImageDrop,
-    handleImagePaste,
 } from "novel";
 import { useState } from "react";
 import { uploadFn } from "../actions/image-upload";
@@ -26,6 +25,8 @@ import { MathSelector } from "./selectors/math-selector";
 import { NodeSelector } from "./selectors/node-selector";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
+
+import { onPast } from "../lib/content-paste";
 
 type Props = {
     size: number;
@@ -64,8 +65,7 @@ export const TextEditor = ({ size }: Props) => {
                                 keydown: (_view, event) =>
                                     handleCommandNavigation(event),
                             },
-                            handlePaste: (view, event) =>
-                                handleImagePaste(view, event, uploadFn),
+                            handlePaste: (view, event) => onPast(view, event),
                             handleDrop: (view, event, _slice, moved) =>
                                 handleImageDrop(view, event, moved, uploadFn),
                             attributes: {
