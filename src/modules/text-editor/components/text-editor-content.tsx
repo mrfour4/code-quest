@@ -18,15 +18,14 @@ import {
 import { useState } from "react";
 import { uploadImageFn } from "../actions/image-upload";
 import { defaultExtensions } from "../lib/extensions";
-import GenerativeMenuSwitch from "./generative/generative-menu-switch";
+import { GenerativeMenuSwitch } from "./generative/generative-menu-switch";
 import { ColorSelector } from "./selectors/color-selector";
 import { LinkSelector } from "./selectors/link-selector";
-import { MathSelector } from "./selectors/math-selector";
 import { NodeSelector } from "./selectors/node-selector";
-import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
 
 import { onPaste } from "../lib/content-paste";
+import { StyleSelector } from "./selectors/style-selector";
 
 type Props = {
     size: number;
@@ -36,10 +35,9 @@ export const TextEditorContent = ({ size }: Props) => {
     const liveblocks = useLiveblocksExtension();
     const extensions = [...defaultExtensions, slashCommand, liveblocks];
 
-    const [openNode, setOpenNode] = useState(false);
-    const [openColor, setOpenColor] = useState(false);
-    const [openLink, setOpenLink] = useState(false);
     const [openAI, setOpenAI] = useState(false);
+    const [openStyle, setOpenStyle] = useState(false);
+    const [openColor, setOpenColor] = useState(false);
 
     const syncStatus = useSyncStatus({ smooth: true });
 
@@ -59,7 +57,7 @@ export const TextEditorContent = ({ size }: Props) => {
                 <EditorRoot>
                     <EditorContent
                         extensions={extensions}
-                        className="relative h-[calc(100vh-126px)] w-full p-6 dark:bg-[#101011]"
+                        className="h-[calc(100vh-126px)] w-full px-6 py-12 dark:bg-[#101011]"
                         editorProps={{
                             handleDOMEvents: {
                                 keydown: (_view, event) =>
@@ -119,19 +117,17 @@ export const TextEditorContent = ({ size }: Props) => {
                             onOpenChange={setOpenAI}
                         >
                             <Separator orientation="vertical" />
-                            <NodeSelector
-                                open={openNode}
-                                onOpenChange={setOpenNode}
+                            <NodeSelector />
+                            <Separator orientation="vertical" />
+                            <LinkSelector />
+                            <Separator orientation="vertical" />
+                            <StyleSelector
+                                open={openStyle}
+                                onOpenChange={setOpenStyle}
                             />
+                            {/* <MathSelector />
                             <Separator orientation="vertical" />
-                            <LinkSelector
-                                open={openLink}
-                                onOpenChange={setOpenLink}
-                            />
-                            <Separator orientation="vertical" />
-                            <MathSelector />
-                            <Separator orientation="vertical" />
-                            <TextButtons />
+                            <TextButtons /> */}
                             <Separator orientation="vertical" />
                             <ColorSelector
                                 open={openColor}

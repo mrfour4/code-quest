@@ -18,6 +18,7 @@ import {
     TextQuote,
 } from "lucide-react";
 import { EditorBubbleItem, useEditor } from "novel";
+import { useState } from "react";
 
 export type SelectorItem = {
     name: string;
@@ -31,7 +32,6 @@ const items: SelectorItem[] = [
         name: "Text",
         icon: TextIcon,
         command: (editor) => editor?.chain().focus().clearNodes().run(),
-        // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
         isActive: (editor) =>
             (editor?.isActive("paragraph") &&
                 !editor?.isActive("bulletList") &&
@@ -113,12 +113,10 @@ const items: SelectorItem[] = [
         isActive: (editor) => editor?.isActive("codeBlock") ?? false,
     },
 ];
-interface NodeSelectorProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}
 
-export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
+export const NodeSelector = () => {
+    const [open, setOpen] = useState(false);
+
     const { editor } = useEditor();
     if (!editor) return null;
     const activeItem = items.filter((item) => item.isActive(editor)).pop() ?? {
@@ -126,7 +124,7 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
     };
 
     return (
-        <Popover modal={true} open={open} onOpenChange={onOpenChange}>
+        <Popover modal={true} open={open} onOpenChange={setOpen}>
             <PopoverTrigger
                 asChild
                 className="hover:bg-accent gap-2 rounded-none border-none focus:ring-0"
@@ -144,7 +142,7 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
                         key={item.name}
                         onSelect={(editor) => {
                             item.command(editor);
-                            onOpenChange(false);
+                            setOpen(false);
                         }}
                         className="hover:bg-accent flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm"
                     >

@@ -3,16 +3,18 @@ import { Button } from "@/components/ui/button";
 import { EditorBubble, removeAIHighlight, useEditor } from "novel";
 import { Fragment, type ReactNode, useEffect } from "react";
 import { AISelector } from "./ai-selector";
-interface GenerativeMenuSwitchProps {
+
+type Props = {
     children: ReactNode;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-}
-const GenerativeMenuSwitch = ({
+};
+
+export const GenerativeMenuSwitch = ({
     children,
     open,
     onOpenChange,
-}: GenerativeMenuSwitchProps) => {
+}: Props) => {
     const { editor } = useEditor();
 
     useEffect(() => {
@@ -22,7 +24,7 @@ const GenerativeMenuSwitch = ({
     return (
         <EditorBubble
             tippyOptions={{
-                placement: open ? "bottom-start" : "top",
+                placement: open ? "bottom-start" : "top-start",
                 onHidden: () => {
                     if (!editor) {
                         return;
@@ -32,7 +34,7 @@ const GenerativeMenuSwitch = ({
                     editor.chain().unsetHighlight().run();
                 },
             }}
-            className="border-muted bg-background flex w-fit max-w-[90vw] overflow-hidden rounded-md border shadow-xl"
+            className="border-muted bg-background flex h-8 w-fit max-w-[40vw] items-center rounded-md border shadow-xl"
         >
             {open && <AISelector open={open} onOpenChange={onOpenChange} />}
             {!open && (
@@ -52,5 +54,3 @@ const GenerativeMenuSwitch = ({
         </EditorBubble>
     );
 };
-
-export default GenerativeMenuSwitch;

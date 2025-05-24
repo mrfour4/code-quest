@@ -1,63 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { PopoverContent } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
-import { Check, Trash } from "lucide-react";
+import { Check, Link2, Trash } from "lucide-react";
 import { useEditor } from "novel";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getUrlFromString } from "../../lib/utils";
 
-export function isValidUrl(url: string) {
-    try {
-        new URL(url);
-        return true;
-    } catch (_e) {
-        return false;
-    }
-}
-export function getUrlFromString(str: string) {
-    if (isValidUrl(str)) return str;
-    try {
-        if (str.includes(".") && !str.includes(" ")) {
-            return new URL(`https://${str}`).toString();
-        }
-    } catch (_e) {
-        return null;
-    }
-}
-interface LinkSelectorProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}
-
-export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
+export const LinkSelector = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { editor } = useEditor();
 
-    // Autofocus on input by default
+    const [open, setOpen] = useState(false);
+
     useEffect(() => {
         inputRef.current?.focus();
     });
     if (!editor) return null;
 
     return (
-        <Popover modal={true} open={open} onOpenChange={onOpenChange}>
+        <Popover modal={true} open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     size="sm"
                     variant="ghost"
                     className="gap-2 rounded-none border-none"
                 >
-                    <p className="text-base">↗</p>
-                    <p
-                        className={cn(
-                            "underline decoration-stone-400 underline-offset-4",
-                            {
-                                "text-blue-500": editor.isActive("link"),
-                            },
-                        )}
-                    >
-                        Link
-                    </p>
+                    <Link2 className="h-4 w-4" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-60 p-0" sideOffset={10}>
@@ -69,7 +37,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
                         const url = getUrlFromString(input.value);
                         if (url) {
                             editor.chain().focus().setLink({ href: url }).run();
-                            onOpenChange(false);
+                            setOpen(false);
                         }
                     }}
                     className="flex p-1"
@@ -92,7 +60,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
                                 if (inputRef.current) {
                                     inputRef.current.value = "";
                                 }
-                                onOpenChange(false);
+                                setOpen(false);
                             }}
                         >
                             <Trash className="h-4 w-4" />

@@ -23,8 +23,8 @@ import {
 } from "novel";
 
 import { cx } from "class-variance-authority";
-import { common, createLowlight } from "lowlight";
 import { Markdown as MarkdownExtension } from "tiptap-markdown";
+import { lowlight } from "./lowlight";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
@@ -119,11 +119,7 @@ const starterKit = StarterKit.configure({
     gapcursor: false,
 });
 
-const codeBlockLowlight = CodeBlockLowlight.configure({
-    // configure lowlight: common /  all / use highlightJS in case there is a need to specify certain language grammars only
-    // common: covers 37 language grammars which should be good enough in most cases
-    lowlight: createLowlight(common),
-});
+const codeBlockLowlight = CodeBlockLowlight.configure({ lowlight });
 
 const youtube = Youtube.configure({
     HTMLAttributes: {
