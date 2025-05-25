@@ -45,16 +45,20 @@ export const CodeEditor = ({ size }: Props) => {
         }
     };
 
-    const sampleCode = `function greet(name: string): void {
-  console.log(\`Hello, \${name}!\`);
-  const sum = (a: number, b: number): number => a + b;
-  console.log("1 + 2 =", sum(1, 2));
-}
-greet("world");
-`;
+    const sampleCode = `function twoSum(nums, target) {
+  const pairIdx = {};
+  
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
+    if (target - num in pairIdx) {
+      return [i, pairIdx[target - num]];
+    }
+    pairIdx[num] = i;
+  }
+};`;
 
     return (
-        <div className="h-full overflow-hidden rounded-b-md border bg-[#262626]">
+        <div className="bg-border h-full overflow-hidden rounded-b-md border">
             <div className="flex items-center justify-between p-1">
                 <LanguageSelector
                     value={language}

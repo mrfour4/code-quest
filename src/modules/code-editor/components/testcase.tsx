@@ -1,145 +1,223 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, X } from "lucide-react";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Plus, Trash, X } from "lucide-react";
+import { nanoid } from "nanoid";
 import { useState } from "react";
+import { Updater } from "use-immer";
 import { TestCase } from "../types";
+import { LabelInput } from "./label-input";
 
-const initialTestCases: TestCase[] = [
-    {
-        id: "1",
-        inputs: [
-            { label: "nums", value: "[2,7,11,15]" },
-            { label: "target", value: "9" },
-        ],
-        expected: "[0,1]",
-    },
-    {
-        id: "2",
-        inputs: [
-            { label: "nums", value: "[3,2,4]" },
-            { label: "target", value: "6" },
-        ],
-        expected: "[1,2]",
-    },
-    {
-        id: "3",
-        inputs: [
-            { label: "nums", value: "[3,3]" },
-            { label: "target", value: "6" },
-        ],
-        expected: "[0,1]",
-    },
-];
+type Props = {
+    value: TestCase[];
+    onChange: Updater<TestCase[]>;
+};
 
-export const Testcase = () => {
-    const [testCases, setTestCases] = useState<TestCase[]>(initialTestCases);
+export const Testcase = ({ value, onChange }: Props) => {
     const [activeTestCase, setActiveTestCase] = useState("1");
 
-    const currentTestCase = testCases.find((tc) => tc.id === activeTestCase);
+    const currentTestCase = value.find((tc) => tc.id === activeTestCase);
+
+    const onAddInput = (testCaseId: string) => {
+        onChange((draft) => {
+            const testCase = draft.find((tc) => tc.id === testCaseId);
+            if (testCase) {
+                testCase.inputs.push({
+                    label: `param ${testCase.inputs.length}`,
+                    value: "",
+                });
+            }
+        });
+    };
+
+    const onRemoveInput = (testCaseId: string, index: number) => {
+        if (!currentTestCase || currentTestCase.inputs.length <= 1) return;
+
+        onChange((draft) => {
+            const testCase = draft.find((tc) => tc.id === testCaseId);
+            if (testCase && testCase.inputs.length > 1) {
+                testCase.inputs.splice(index, 1);
+            }
+        });
+    };
+
+    const onUpdateInput = (
+        testCaseId: string,
+        index: number,
+        field: "label" | "value",
+        value: string,
+    ) => {
+        onChange((draft) => {
+            const testCase = draft.find((tc) => tc.id === testCaseId);
+            if (testCase) {
+                testCase.inputs[index][field] = value;
+            }
+        });
+    };
+
+    const onUpdateExpected = (testCaseId: string, value: string) => {
+        onChange((draft) => {
+            const testCase = draft.find((tc) => tc.id === testCaseId);
+            if (testCase) {
+                testCase.expected = value;
+            }
+        });
+    };
+
+    const onCloneTestCase = () => {
+        const newTestCase: TestCase = {
+            id: nanoid(),
+            inputs: currentTestCase?.inputs.slice() || [],
+            expected: currentTestCase?.expected || "",
+        };
+
+        onChange((draft) => {
+            draft.push(newTestCase);
+        });
+        setActiveTestCase(newTestCase.id);
+    };
+
+    const onRemoveTestCase = (testCaseId: string) => {
+        if (value.length <= 1) return;
+
+        onChange((draft) => draft.filter((tc) => tc.id !== testCaseId));
+        if (activeTestCase === testCaseId) {
+            setActiveTestCase(value[0].id);
+        }
+    };
+
     return (
         <>
-            <div className="mb-4 flex items-center gap-2">
-                {testCases.map((testCase) => (
-                    <div key={testCase.id} className="flex items-center">
+            <div
+                className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-4"
+                key={activeTestCase}
+            >
+                {value.map((testCase, index) => (
+                    <div key={testCase.id} className="group relative">
                         <Button
-                            variant={
-                                activeTestCase === testCase.id
-                                    ? "default"
-                                    : "ghost"
-                            }
+                            variant="ghost"
                             size="sm"
                             onClick={() => setActiveTestCase(testCase.id)}
-                            className={`rounded-r-none ${
-                                activeTestCase === testCase.id
-                                    ? "bg-gray-600 text-white"
-                                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                            }`}
+                            className={cn(
+                                "hover:!bg-ring group-hover:bg-ring h-auto cursor-pointer rounded-sm px-4 py-1",
+                                activeTestCase === testCase.id &&
+                                    "bg-ring group-hover:bg-ring/80",
+                            )}
                         >
-                            Case {testCase.id}
+                            Case {index + 1}
                         </Button>
-                        {testCases.length > 1 && (
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {}}
-                                className="rounded-l-none px-2 text-gray-400 hover:bg-gray-700 hover:text-red-400"
+                        {value.length > 1 && (
+                            <button
+                                className="bg-muted-foreground absolute top-0 right-0 hidden translate-x-1/2 -translate-y-1/3 cursor-pointer rounded-full p-0.5 group-hover:block"
+                                onClick={() => onRemoveTestCase(testCase.id)}
                             >
-                                <X className="h-3 w-3" />
-                            </Button>
+                                <X className="size-2.5" />
+                            </button>
                         )}
                     </div>
                 ))}
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {}}
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                    <Plus className="h-4 w-4" />
-                </Button>
+
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={onCloneTestCase}
+                            className="-ml-1 size-7 cursor-pointer"
+                        >
+                            <Plus />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Clone current testcase</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
 
             {currentTestCase && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {currentTestCase.inputs.map((input, index) => (
-                        <div key={index} className="space-y-2">
+                        <div key={index} className="group space-y-2">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="text"
-                                        value={input.label}
-                                        onChange={(e) => {}}
-                                        className="min-w-0 flex-shrink-0 rounded border border-gray-600 bg-gray-700 px-2 py-1 text-sm font-medium text-white"
-                                        placeholder="Label"
-                                    />
-                                    <span className="text-gray-300">=</span>
-                                </div>
+                                <LabelInput
+                                    value={input.label}
+                                    onChange={(value) =>
+                                        onUpdateInput(
+                                            currentTestCase.id,
+                                            index,
+                                            "label",
+                                            value,
+                                        )
+                                    }
+                                />
                                 {currentTestCase.inputs.length > 1 && (
                                     <Button
                                         variant="ghost"
-                                        size="sm"
-                                        onClick={() => {}}
-                                        className="text-gray-400 hover:text-red-400"
+                                        size="icon"
+                                        onClick={() =>
+                                            onRemoveInput(
+                                                currentTestCase.id,
+                                                index,
+                                            )
+                                        }
+                                        className="hover:text-destructive invisible size-7 group-hover:visible"
                                     >
-                                        <X className="h-3 w-3" />
+                                        <Trash className="size-3.5" />
                                     </Button>
                                 )}
                             </div>
                             <Textarea
                                 value={input.value}
-                                onChange={(e) => {}}
-                                className="border-gray-600 bg-gray-700 font-mono text-white"
-                                rows={2}
+                                onChange={(e) =>
+                                    onUpdateInput(
+                                        currentTestCase.id,
+                                        index,
+                                        "value",
+                                        e.target.value,
+                                    )
+                                }
                                 placeholder="Value"
+                                className="bg-border min-h-10"
+                                rows={1}
                             />
                         </div>
                     ))}
 
-                    {/* Expected Output */}
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onAddInput(currentTestCase.id)}
+                        className="hover:!bg-input cursor-pointer gap-1 rounded-sm text-xs"
+                    >
+                        <Plus className="size-3" />
+                        Add Parameter
+                    </Button>
+
                     <div className="space-y-2">
                         <div className="flex items-center gap-2">
-                            <span className="font-medium text-gray-300">
+                            <span className="text-muted-foreground text-xs font-medium">
                                 Expected =
                             </span>
                         </div>
                         <Textarea
                             value={currentTestCase.expected}
-                            onChange={(e) => {}}
-                            className="border-gray-600 bg-gray-700 font-mono text-white"
-                            rows={2}
+                            onChange={(e) =>
+                                onUpdateExpected(
+                                    currentTestCase.id,
+                                    e.target.value,
+                                )
+                            }
                             placeholder="Expected output"
+                            className="bg-border min-h-10"
+                            rows={1}
+                            onFocus={(e) => e.target.select()}
                         />
                     </div>
-
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {}}
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white"
-                    >
-                        <Plus className="mr-1 h-4 w-4" />
-                        Add Input
-                    </Button>
                 </div>
             )}
         </>

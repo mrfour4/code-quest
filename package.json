@@ -71,6 +71,7 @@
         "tldraw": "^3.12.1",
         "ts-pattern": "^5.7.1",
         "use-debounce": "^10.0.4",
+        "use-immer": "^0.11.0",
         "y-utility": "^0.1.4",
         "yjs": "^13.6.26",
         "zod": "^3.24.3"

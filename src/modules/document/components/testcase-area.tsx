@@ -2,11 +2,51 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Results } from "@/modules/code-editor/components/results";
 import { Testcase } from "@/modules/code-editor/components/testcase";
+import { TestCase, TestResult } from "@/modules/code-editor/types";
 import { FlaskConical, Terminal } from "lucide-react";
 import { useState } from "react";
+import { useImmer } from "use-immer";
+
+const initialTestCases: TestCase[] = [
+    {
+        id: "1",
+        inputs: [
+            { label: "nums", value: "[2,7,11,15]" },
+            { label: "target", value: "9" },
+        ],
+        expected: "[0,1]",
+    },
+    {
+        id: "2",
+        inputs: [
+            { label: "nums", value: "[3,2,4]" },
+            { label: "target", value: "6" },
+        ],
+        expected: "[1,2]",
+    },
+    {
+        id: "21",
+        inputs: [
+            { label: "nums", value: "[3,2,4]" },
+            { label: "target", value: "6" },
+        ],
+        expected: "[1,2]",
+    },
+    {
+        id: "3",
+        inputs: [
+            { label: "nums", value: "[3,3]" },
+            { label: "target", value: "6" },
+        ],
+        expected: "[0,1]",
+    },
+];
 
 export const TestCaseArea = () => {
     const [activeTab, setActiveTab] = useState("testcase");
+
+    const [testCases, setTestCases] = useImmer<TestCase[]>(initialTestCases);
+    const [results, setResults] = useImmer<TestResult[]>([]);
 
     return (
         <Tabs
@@ -28,12 +68,15 @@ export const TestCaseArea = () => {
                 </TabsList>
             </div>
 
-            <TabsContent value="testcase" className="flex-1 overflow-auto p-4">
-                <Testcase />
+            <TabsContent
+                value="testcase"
+                className="flex-1 overflow-auto px-3 py-2"
+            >
+                <Testcase value={testCases} onChange={setTestCases} />
             </TabsContent>
 
-            <TabsContent value="result" className="flex-1 overflow-hidden">
-                <Results />
+            <TabsContent value="result" className="flex-1">
+                <Results value={results} onChange={setResults} />
             </TabsContent>
         </Tabs>
     );
