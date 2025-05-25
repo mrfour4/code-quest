@@ -1,5 +1,5 @@
 import { getAuthToken } from "@/modules/auth/lib/auth";
-import { DocumentContent } from "@/modules/document/components/doc-content";
+import { DocumentContent } from "@/modules/document/components/document-content";
 import { Header } from "@/modules/document/components/header";
 import { Room } from "@/modules/room/components/room";
 import { preloadQuery } from "convex/nextjs";

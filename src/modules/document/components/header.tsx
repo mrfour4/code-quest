@@ -8,7 +8,7 @@ import { Preloaded, usePreloadedQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "../../../../convex/_generated/api";
 import { Role } from "../../../../convex/documents";
-import { DocumentTitle } from "./doc-title";
+import { DocumentTitle } from "./document-title";
 import { PublishButton } from "./publish-btn";
 
 type Props = {

@@ -24,6 +24,7 @@ import { LinkSelector } from "./selectors/link-selector";
 import { slashCommand, suggestionItems } from "./slash-command";
 
 import { cn } from "@/lib/utils";
+import { FileText } from "lucide-react";
 import { useUpdateDocumentState } from "../hooks/use-update-state";
 import { onPaste } from "../lib/content-paste";
 import { StyleSelector } from "./selectors/style-selector";
@@ -44,8 +45,13 @@ export const TextEditorContent = ({ size }: Props) => {
     const updateDocumentState = useUpdateDocumentState();
 
     return (
-        <div className="rounded-m h-full overflow-hidden rounded-md border dark:bg-[#101011]">
-            <div className="bg-accent relative flex h-10 items-center justify-end border-b px-4">
+        <div className="h-full overflow-hidden rounded-md border dark:bg-[#101011]">
+            <div className="bg-accent relative flex h-10 items-center justify-between px-4">
+                <div className="flex items-center gap-1.5 space-x-2 text-sm">
+                    <FileText className="size-4 text-blue-500" />
+                    Document
+                </div>
+
                 <p className="text-muted-foreground text-sm">
                     {syncStatus === "synchronizing" ? "Unsaved" : "Saved"}
                 </p>
@@ -76,7 +82,7 @@ export const TextEditorContent = ({ size }: Props) => {
                             handleTextInput: updateDocumentState,
 
                             attributes: {
-                                class: "prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
+                                class: "prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full ",
                             },
                         }}
                         slotAfter={<ImageResizer />}
