@@ -1,15 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const CanvasComponent = dynamic(
-    () => import("./canvas-content").then((mod) => mod.CanvasContent),
-    {
-        ssr: false,
-        loading: () => <div>Canvas Loading...</div>,
-    },
-);
+import { ClientSideSuspense } from "@liveblocks/react";
+import { CanvasContent } from "./canvas-content";
 
 export function Canvas() {
-    return <CanvasComponent />;
+    return (
+        <ClientSideSuspense fallback={<div>Canvas loading....</div>}>
+            <CanvasContent />
+        </ClientSideSuspense>
+    );
 }

@@ -2,8 +2,8 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useSyncStatus } from "@liveblocks/react";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
+import { useSyncStatus } from "@liveblocks/react/suspense";
 import {
     EditorCommand,
     EditorCommandEmpty,
@@ -24,6 +24,7 @@ import { LinkSelector } from "./selectors/link-selector";
 import { NodeSelector } from "./selectors/node-selector";
 import { slashCommand, suggestionItems } from "./slash-command";
 
+import { useUpdateDocumentState } from "../hooks/use-update-state";
 import { onPaste } from "../lib/content-paste";
 import { StyleSelector } from "./selectors/style-selector";
 
@@ -39,6 +40,8 @@ export const TextEditorContent = ({ size }: Props) => {
     const [openStyle, setOpenStyle] = useState(false);
 
     const syncStatus = useSyncStatus({ smooth: true });
+
+    const updateDocumentState = useUpdateDocumentState();
 
     return (
         <div className="rounded-m h-full overflow-hidden rounded-md border dark:bg-[#101011]">
@@ -70,6 +73,7 @@ export const TextEditorContent = ({ size }: Props) => {
                                     moved,
                                     uploadImageFn,
                                 ),
+                            handleTextInput: updateDocumentState,
 
                             attributes: {
                                 class: "prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",

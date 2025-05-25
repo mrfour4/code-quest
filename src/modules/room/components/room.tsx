@@ -2,11 +2,7 @@
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LiveMap } from "@liveblocks/client";
-import {
-    ClientSideSuspense,
-    LiveblocksProvider,
-    RoomProvider,
-} from "@liveblocks/react/suspense";
+import { LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 import { ReactNode } from "react";
 import { getDocuments } from "../actions/get-documents";
 import { getUsers } from "../actions/get-users";
@@ -52,17 +48,7 @@ export function Room({ children, documentId }: Props) {
                 initialPresence={{ cursor: null, presence: null }}
                 initialStorage={{ records: new LiveMap() }}
             >
-                <ClientSideSuspense
-                    fallback={
-                        <div className="p-12 px-8 text-xl text-red-600 sm:px-12">
-                            Loading…
-                        </div>
-                    }
-                >
-                    <TooltipProvider delayDuration={0}>
-                        {children}
-                    </TooltipProvider>
-                </ClientSideSuspense>
+                <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
             </RoomProvider>
         </LiveblocksProvider>
     );

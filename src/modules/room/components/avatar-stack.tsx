@@ -44,7 +44,7 @@ export const Avatars = () => {
 
 export const AvatarStack = () => {
     return (
-        <ClientSideSuspense fallback={null}>
+        <ClientSideSuspense fallback={<div>Avatars loading...</div>}>
             <Avatars />
         </ClientSideSuspense>
     );

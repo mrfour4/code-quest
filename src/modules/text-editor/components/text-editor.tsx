@@ -1,19 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const TextEditorComponent = dynamic(
-    () => import("./text-editor-content").then((mod) => mod.TextEditorContent),
-    {
-        ssr: false,
-        loading: () => <div>Text Editor Loading...</div>,
-    },
-);
+import { ClientSideSuspense } from "@liveblocks/react/suspense";
+import { TextEditorContent } from "./text-editor-content";
 
 type Props = {
     size: number;
 };
 
 export function TextEditor({ size }: Props) {
-    return <TextEditorComponent size={size} />;
+    return (
+        <ClientSideSuspense fallback={<div>Text editor loading...</div>}>
+            <TextEditorContent size={size} />
+        </ClientSideSuspense>
+    );
 }
