@@ -14,7 +14,8 @@ import {
     Youtube,
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel";
-import { uploadFileFn, uploadImageFn } from "../actions/image-upload";
+import { uploadFileFn } from "../actions/file-upload";
+import { uploadImageFn } from "../actions/image-upload";
 
 export const suggestionItems = createSuggestionItems([
     {
@@ -158,7 +159,6 @@ export const suggestionItems = createSuggestionItems([
                 if (input.files?.length) {
                     const file = input.files[0];
                     const fileUrl = await uploadFileFn(file);
-                    console.log("🚀 ~ input.onchange= ~ fileUrl:", fileUrl);
 
                     editor.commands.insertContent(
                         `🔗 <a href="${fileUrl}" target="_blank" rel="noopener noreferrer">i${file.name}</a>`,

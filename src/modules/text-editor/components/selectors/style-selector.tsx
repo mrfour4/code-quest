@@ -4,58 +4,9 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    BoldIcon,
-    Check,
-    ChevronDown,
-    CodeIcon,
-    ItalicIcon,
-    type LucideIcon,
-    Paintbrush,
-    StrikethroughIcon,
-    UnderlineIcon,
-} from "lucide-react";
+import { Check, ChevronDown, Paintbrush } from "lucide-react";
 import { EditorBubbleItem, useEditor } from "novel";
-
-export type SelectorItem = {
-    name: string;
-    icon: LucideIcon;
-    command: (editor: ReturnType<typeof useEditor>["editor"]) => void;
-    isActive: (editor: ReturnType<typeof useEditor>["editor"]) => boolean;
-};
-
-const items: SelectorItem[] = [
-    {
-        name: "bold",
-        isActive: (editor) => editor?.isActive("bold") ?? false,
-        command: (editor) => editor?.chain().focus().toggleBold().run(),
-        icon: BoldIcon,
-    },
-    {
-        name: "italic",
-        isActive: (editor) => editor?.isActive("italic") ?? false,
-        command: (editor) => editor?.chain().focus().toggleItalic().run(),
-        icon: ItalicIcon,
-    },
-    {
-        name: "underline",
-        isActive: (editor) => editor?.isActive("underline") ?? false,
-        command: (editor) => editor?.chain().focus().toggleUnderline().run(),
-        icon: UnderlineIcon,
-    },
-    {
-        name: "strike",
-        isActive: (editor) => editor?.isActive("strike") ?? false,
-        command: (editor) => editor?.chain().focus().toggleStrike().run(),
-        icon: StrikethroughIcon,
-    },
-    {
-        name: "code",
-        isActive: (editor) => editor?.isActive("code") ?? false,
-        command: (editor) => editor?.chain().focus().toggleCode().run(),
-        icon: CodeIcon,
-    },
-];
+import { STYLE_SELECTOR_ITEMS } from "../../constants/style-selector";
 
 type Props = {
     open: boolean;
@@ -78,7 +29,7 @@ export const StyleSelector = ({ open, onOpenChange }: Props) => {
                 </Button>
             </PopoverTrigger>
             <PopoverContent sideOffset={5} align="start" className="w-48 p-1">
-                {items.map((item) => (
+                {STYLE_SELECTOR_ITEMS.map((item) => (
                     <EditorBubbleItem
                         key={item.name}
                         onSelect={(editor) => {

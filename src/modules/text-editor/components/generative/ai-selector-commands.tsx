@@ -3,38 +3,9 @@ import {
     CommandItem,
     CommandSeparator,
 } from "@/components/ui/command";
-import {
-    ArrowDownWideNarrow,
-    CheckCheck,
-    RefreshCcwDot,
-    StepForward,
-    WrapText,
-} from "lucide-react";
+import { StepForward } from "lucide-react";
 import { getPrevText, useEditor } from "novel";
-
-const options = [
-    {
-        value: "improve",
-        label: "Improve writing",
-        icon: RefreshCcwDot,
-    },
-
-    {
-        value: "fix",
-        label: "Fix grammar",
-        icon: CheckCheck,
-    },
-    {
-        value: "shorter",
-        label: "Make shorter",
-        icon: ArrowDownWideNarrow,
-    },
-    {
-        value: "longer",
-        label: "Make longer",
-        icon: WrapText,
-    },
-];
+import { AI_SELECTOR_OPTIONS } from "../../constants/ai-selector";
 
 type Props = {
     onSelect: (value: string, option: string) => void;
@@ -46,7 +17,7 @@ export const AISelectorCommands = ({ onSelect }: Props) => {
     return (
         <>
             <CommandGroup heading="Edit or review selection">
-                {options.map((option) => (
+                {AI_SELECTOR_OPTIONS.map((option) => (
                     <CommandItem
                         onSelect={(value) => {
                             if (!editor) {
