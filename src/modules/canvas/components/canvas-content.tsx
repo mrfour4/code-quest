@@ -5,9 +5,10 @@ import "tldraw/tldraw.css";
 import { useSelf } from "@liveblocks/react/suspense";
 import { Tldraw } from "tldraw";
 
+import { memo } from "react";
 import { useYjsStore } from "../hooks/use-yjs-store";
 
-export const CanvasContent = () => {
+export const CanvasContent = memo(function CanvasContent() {
     const id = useSelf((me) => me.id);
     const info = useSelf((me) => me.info);
 
@@ -29,4 +30,4 @@ export const CanvasContent = () => {
             />
         </div>
     );
-};
+});

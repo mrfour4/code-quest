@@ -1,7 +1,9 @@
 import Magic from "@/components/icons/magic";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { EditorBubble, removeAIHighlight, useEditor } from "novel";
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useState } from "react";
+import { NodeSelector } from "../selectors/node-selector";
 import { AISelector } from "./ai-selector";
 interface Props {
     children: ReactNode;
@@ -15,6 +17,7 @@ export const GenerativeMenuSwitch = ({
     onOpenChange,
 }: Props) => {
     const { editor } = useEditor();
+    const [showMore, setShowMore] = useState(true);
 
     useEffect(() => {
         if (!open && editor) removeAIHighlight(editor);
@@ -33,6 +36,15 @@ export const GenerativeMenuSwitch = ({
             tippyOptions={{
                 placement: "bottom-start",
                 interactive: true,
+
+                onShow: () => {
+                    if (!editor) {
+                        return;
+                    }
+
+                    const parentNode = editor.state.selection.$from.parent;
+                    setShowMore(parentNode.type.name !== "codeBlock");
+                },
 
                 onHidden: () => {
                     if (!editor) {
@@ -57,7 +69,9 @@ export const GenerativeMenuSwitch = ({
                         <Magic className="h-5 w-5" />
                         Ask AI
                     </Button>
-                    {children}
+                    <Separator orientation="vertical" />
+                    <NodeSelector />
+                    {showMore && children}
                 </>
             )}
         </EditorBubble>

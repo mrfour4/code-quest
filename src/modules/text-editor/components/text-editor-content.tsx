@@ -21,9 +21,9 @@ import { defaultExtensions } from "../lib/extensions";
 import { GenerativeMenuSwitch } from "./generative/generative-menu-switch";
 import { ColorSelector } from "./selectors/color-selector";
 import { LinkSelector } from "./selectors/link-selector";
-import { NodeSelector } from "./selectors/node-selector";
 import { slashCommand, suggestionItems } from "./slash-command";
 
+import { cn } from "@/lib/utils";
 import { useUpdateDocumentState } from "../hooks/use-update-state";
 import { onPaste } from "../lib/content-paste";
 import { StyleSelector } from "./selectors/style-selector";
@@ -59,7 +59,7 @@ export const TextEditorContent = ({ size }: Props) => {
                 <EditorRoot>
                     <EditorContent
                         extensions={extensions}
-                        className="w-full px-6 py-12 dark:bg-[#101011]"
+                        className={cn("w-full px-6 py-12 dark:bg-[#101011]")}
                         editorProps={{
                             handleDOMEvents: {
                                 keydown: (_view, event) =>
@@ -120,8 +120,6 @@ export const TextEditorContent = ({ size }: Props) => {
                             open={openAI}
                             onOpenChange={setOpenAI}
                         >
-                            <Separator orientation="vertical" />
-                            <NodeSelector />
                             <Separator orientation="vertical" />
                             <LinkSelector />
                             <Separator orientation="vertical" />

@@ -16,6 +16,7 @@
         "@liveblocks/react-tiptap": "^2.24.1",
         "@liveblocks/react-ui": "^2.24.1",
         "@liveblocks/yjs": "^2.24.1",
+        "@monaco-editor/react": "^4.7.0",
         "@radix-ui/react-alert-dialog": "^1.1.11",
         "@radix-ui/react-dialog": "^1.1.14",
         "@radix-ui/react-dropdown-menu": "^2.1.12",
@@ -303,6 +304,10 @@
     "@liveblocks/react-ui": ["@liveblocks/react-ui@2.24.1", "", { "dependencies": { "@floating-ui/react-dom": "^2.1.2", "@liveblocks/client": "2.24.1", "@liveblocks/core": "2.24.1", "@liveblocks/react": "2.24.1", "@radix-ui/react-dropdown-menu": "^2.1.2", "@radix-ui/react-popover": "^1.1.2", "@radix-ui/react-slot": "^1.1.0", "@radix-ui/react-toggle": "^1.1.0", "@radix-ui/react-tooltip": "^1.1.3", "frimousse": "^0.2.0", "slate": "^0.110.2", "slate-history": "^0.110.3", "slate-hyperscript": "^0.100.0", "slate-react": "^0.110.3" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc" } }, "sha512-dY3qTw2FIwNdo1/5CSbkmDPECAYNVwiZTqFnh3uK6ysJ1s+v8u4eoZGb8due/eAFd6+PXeNZdOo0HUFauQGrYQ=="],
 
     "@liveblocks/yjs": ["@liveblocks/yjs@2.24.1", "", { "dependencies": { "@liveblocks/client": "2.24.1", "@liveblocks/core": "2.24.1", "js-base64": "^3.7.7", "y-indexeddb": "^9.0.12" }, "peerDependencies": { "yjs": "^13.6.1" } }, "sha512-3pSIVo3A8wttPUP85LOEOO5XRBNG8ibSeLe/WB34HL3DOhdYPqxMykPARrfhBJpUjw0kRHgOFnkJ2N8l04pFBw=="],
+
+    "@monaco-editor/loader": ["@monaco-editor/loader@1.5.0", "", { "dependencies": { "state-local": "^1.0.6" } }, "sha512-hKoGSM+7aAc7eRTRjpqAZucPmoNOC4UUbknb/VNoTkEIkCPhqV8LfbsgM1webRM7S/z21eHEx9Fkwx8Z/C/+Xw=="],
+
+    "@monaco-editor/react": ["@monaco-editor/react@4.7.0", "", { "dependencies": { "@monaco-editor/loader": "^1.5.0" }, "peerDependencies": { "monaco-editor": ">= 0.25.0 < 1", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-cyzXQCtO47ydzxpQtCGSQGOC8Gk3ZUeBXFAxD+CWXYFo5OqZyZUonFl0DwUlTyAfRHntBfw2p3w4s9R6oe1eCA=="],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@0.2.9", "", { "dependencies": { "@emnapi/core": "^1.4.0", "@emnapi/runtime": "^1.4.0", "@tybys/wasm-util": "^0.9.0" } }, "sha512-OKRBiajrrxB9ATokgEQoG87Z25c67pCpYcCwmXYX8PBftC9pBfN18gnm/fh1wurSLEKIAt+QRFLFCQISrb66Jg=="],
 
@@ -1318,6 +1323,8 @@
 
     "mitt": ["mitt@3.0.1", "", {}, "sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw=="],
 
+    "monaco-editor": ["monaco-editor@0.52.2", "", {}, "sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ=="],
+
     "ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
 
     "nanoid": ["nanoid@5.1.5", "", { "bin": { "nanoid": "bin/nanoid.js" } }, "sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw=="],
@@ -1561,6 +1568,8 @@
     "space-separated-tokens": ["space-separated-tokens@2.0.2", "", {}, "sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q=="],
 
     "stable-hash": ["stable-hash@0.0.5", "", {}, "sha512-+L3ccpzibovGXFK+Ap/f8LOS0ahMrHTf3xu7mMLSpEGU0EO9ucaysSylKo9eRDFNhWve/y275iPmIZ4z39a9iA=="],
+
+    "state-local": ["state-local@1.0.7", "", {}, "sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w=="],
 
     "std-env": ["std-env@3.9.0", "", {}, "sha512-UGvjygr6F6tpH7o2qyqR6QYpwraIjKSdtzyBdyytFOHmPZY917kwdwLG0RbOjWOnKmnm3PeHjaoLLMie7kPLQw=="],
 
