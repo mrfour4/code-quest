@@ -5,25 +5,35 @@ import { Command, CommandInput } from "@/components/ui/command";
 import CrazySpinner from "@/components/icons/crazy-spinner";
 import Magic from "@/components/icons/magic";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import ResizableScrollArea from "@/modules/text-editor/components/resizable-scroll-area";
 import { useCompletion } from "@ai-sdk/react";
 import { ArrowUp } from "lucide-react";
 import { addAIHighlight, useEditor } from "novel";
-import { useState } from "react";
-import Markdown from "react-markdown";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import AICompletionCommands from "./ai-completion-command";
-import AISelectorCommands from "./ai-selector-commands";
-//TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
+import { MarkdownWrapper } from "../markdown-wrapper";
+import { AICompletionCommands } from "./ai-completion-command";
+import { AISelectorCommands } from "./ai-selector-commands";
 
-interface AISelectorProps {
-    open: boolean;
+type Props = {
     onOpenChange: (open: boolean) => void;
-}
+};
 
-export function AISelector({ onOpenChange }: AISelectorProps) {
+export function AISelector({ onOpenChange }: Props) {
     const { editor } = useEditor();
     const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        if (!editor) {
+            return;
+        }
+
+        editor.view.dom.classList.add("novel-ai-answer");
+
+        return () => {
+            editor.view.dom.classList.remove("novel-ai-answer");
+        };
+    }, [editor]);
 
     const { completion, complete, isLoading } = useCompletion({
         // id: "novel",
@@ -41,16 +51,42 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 
     const hasCompletion = completion.length > 0;
 
+    const onSubmit = () => {
+        if (!editor) {
+            return;
+        }
+
+        if (completion)
+            return complete(completion, {
+                body: {
+                    option: "zap",
+                    command: inputValue,
+                },
+            }).then(() => setInputValue(""));
+
+        const slice = editor.state.selection.content();
+        const text = editor.storage.markdown.serializer.serialize(
+            slice.content,
+        );
+
+        complete(text, {
+            body: {
+                option: "zap",
+                command: inputValue,
+            },
+        }).then(() => setInputValue(""));
+    };
+
     return (
-        <Command className="w-[350px]">
+        <Command className="w-auto">
             {hasCompletion && (
-                <div className="flex max-h-[400px]">
-                    <ScrollArea>
-                        <div className="prose dark:prose-invert prose-sm p-2 px-4">
-                            <Markdown>{completion}</Markdown>
+                <ResizableScrollArea height={300} minWidth={350} maxWidth={600}>
+                    <div className="w-full overflow-hidden p-2 px-4">
+                        <div className="prose dark:prose-invert prose-sm overflow-wrap-anywhere w-full max-w-none break-words">
+                            <MarkdownWrapper>{completion}</MarkdownWrapper>
                         </div>
-                    </ScrollArea>
-                </div>
+                    </div>
+                </ResizableScrollArea>
             )}
 
             {isLoading && (
@@ -64,7 +100,13 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
             )}
             {!isLoading && (
                 <>
-                    <div className="relative">
+                    <form
+                        className="relative"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onSubmit();
+                        }}
+                    >
                         <CommandInput
                             value={inputValue}
                             onValueChange={setInputValue}
@@ -81,40 +123,21 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 
                                 addAIHighlight(editor);
                             }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                    onSubmit();
+                                }
+                            }}
+                            className="pr-8"
                         />
                         <Button
                             size="icon"
                             className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 rounded-full bg-purple-500 hover:bg-purple-900"
-                            onClick={() => {
-                                if (!editor) {
-                                    return;
-                                }
-
-                                if (completion)
-                                    return complete(completion, {
-                                        body: {
-                                            option: "zap",
-                                            command: inputValue,
-                                        },
-                                    }).then(() => setInputValue(""));
-
-                                const slice = editor.state.selection.content();
-                                const text =
-                                    editor.storage.markdown.serializer.serialize(
-                                        slice.content,
-                                    );
-
-                                complete(text, {
-                                    body: {
-                                        option: "zap",
-                                        command: inputValue,
-                                    },
-                                }).then(() => setInputValue(""));
-                            }}
+                            type="submit"
                         >
                             <ArrowUp className="h-4 w-4" />
                         </Button>
-                    </div>
+                    </form>
                     {hasCompletion ? (
                         <AICompletionCommands
                             onDiscard={() => {
@@ -123,7 +146,10 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
                                 }
 
                                 editor.chain().unsetHighlight().focus().run();
-                                // onOpenChange(false);
+                                onOpenChange(false);
+                                editor.view.dom.classList.remove(
+                                    "novel-ai-active",
+                                );
                             }}
                             completion={completion}
                         />

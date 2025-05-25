@@ -6,13 +6,12 @@ import {
 import { Check, TextQuote, TrashIcon } from "lucide-react";
 import { useEditor } from "novel";
 
-const AICompletionCommands = ({
-    completion,
-    onDiscard,
-}: {
+type Props = {
     completion: string;
     onDiscard: () => void;
-}) => {
+};
+
+export const AICompletionCommands = ({ completion, onDiscard }: Props) => {
     const { editor } = useEditor();
     return (
         <>
@@ -77,5 +76,3 @@ const AICompletionCommands = ({
         </>
     );
 };
-
-export default AICompletionCommands;

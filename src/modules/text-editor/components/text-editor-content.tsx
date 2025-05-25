@@ -37,7 +37,6 @@ export const TextEditorContent = ({ size }: Props) => {
 
     const [openAI, setOpenAI] = useState(false);
     const [openStyle, setOpenStyle] = useState(false);
-    const [openColor, setOpenColor] = useState(false);
 
     const syncStatus = useSyncStatus({ smooth: true });
 
@@ -57,7 +56,7 @@ export const TextEditorContent = ({ size }: Props) => {
                 <EditorRoot>
                     <EditorContent
                         extensions={extensions}
-                        className="h-[calc(100vh-126px)] w-full px-6 py-12 dark:bg-[#101011]"
+                        className="w-full px-6 py-12 dark:bg-[#101011]"
                         editorProps={{
                             handleDOMEvents: {
                                 keydown: (_view, event) =>
@@ -71,6 +70,7 @@ export const TextEditorContent = ({ size }: Props) => {
                                     moved,
                                     uploadImageFn,
                                 ),
+
                             attributes: {
                                 class: "prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
                             },
@@ -127,7 +127,6 @@ export const TextEditorContent = ({ size }: Props) => {
                             />
                             <Separator orientation="vertical" />
                             <ColorSelector />
-                            <Separator orientation="vertical" />
                         </GenerativeMenuSwitch>
                     </EditorContent>
                 </EditorRoot>

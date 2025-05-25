@@ -36,11 +36,11 @@ const options = [
     },
 ];
 
-interface AISelectorCommandsProps {
+type Props = {
     onSelect: (value: string, option: string) => void;
-}
+};
 
-const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
+export const AISelectorCommands = ({ onSelect }: Props) => {
     const { editor } = useEditor();
 
     return (
@@ -92,5 +92,3 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
         </>
     );
 };
-
-export default AISelectorCommands;

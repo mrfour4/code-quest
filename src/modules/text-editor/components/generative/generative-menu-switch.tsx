@@ -1,14 +1,13 @@
 import Magic from "@/components/icons/magic";
 import { Button } from "@/components/ui/button";
 import { EditorBubble, removeAIHighlight, useEditor } from "novel";
-import { Fragment, type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { AISelector } from "./ai-selector";
-
-type Props = {
+interface Props {
     children: ReactNode;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-};
+}
 
 export const GenerativeMenuSwitch = ({
     children,
@@ -19,12 +18,22 @@ export const GenerativeMenuSwitch = ({
 
     useEffect(() => {
         if (!open && editor) removeAIHighlight(editor);
+
+        if (open && editor) {
+            editor.view.dom.classList.add("novel-ai-active");
+        }
+
+        return () => {
+            editor?.view.dom.classList.remove("novel-ai-active");
+        };
     }, [open, editor]);
 
     return (
         <EditorBubble
             tippyOptions={{
-                placement: open ? "bottom-start" : "top-start",
+                placement: "bottom-start",
+                interactive: true,
+
                 onHidden: () => {
                     if (!editor) {
                         return;
@@ -34,11 +43,11 @@ export const GenerativeMenuSwitch = ({
                     editor.chain().unsetHighlight().run();
                 },
             }}
-            className="border-muted bg-background flex h-8 w-fit max-w-[40vw] items-center rounded-md border shadow-xl"
+            className="border-muted bg-background flex w-fit max-w-[90vw] overflow-hidden rounded-md border shadow-xl"
         >
-            {open && <AISelector open={open} onOpenChange={onOpenChange} />}
+            {open && <AISelector onOpenChange={onOpenChange} />}
             {!open && (
-                <Fragment>
+                <>
                     <Button
                         className="gap-1 rounded-none text-purple-500"
                         variant="ghost"
@@ -49,7 +58,7 @@ export const GenerativeMenuSwitch = ({
                         Ask AI
                     </Button>
                     {children}
-                </Fragment>
+                </>
             )}
         </EditorBubble>
     );
