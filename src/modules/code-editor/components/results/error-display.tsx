@@ -1,3 +1,4 @@
+import { ButtonCopy } from "@/components/button-copy";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { firaCode } from "@/lib/font";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,11 @@ export const ErrorDisplay = ({ error }: Props) => {
             </div>
             <div className="flex-1 overflow-hidden">
                 <ScrollArea className="h-full px-3">
-                    <div className="mb-4 rounded-md bg-red-300/10">
+                    <div className="group relative mb-4 rounded-md bg-red-300/10">
+                        <ButtonCopy
+                            value={error}
+                            className="invisible absolute top-2 right-2 group-hover:visible"
+                        />
                         <div className="p-3">
                             <pre
                                 className={cn(

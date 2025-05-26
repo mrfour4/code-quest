@@ -1,9 +1,5 @@
+import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 type Props = {
     children?: React.ReactNode;
@@ -13,20 +9,15 @@ type Props = {
 
 export const ActionSelector = ({ children, title, onClick }: Props) => {
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    className="dark:hover:bg-input/50 size-8 rounded-sm"
-                    onClick={onClick}
-                >
-                    {children}
-                </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-                <p>{title}</p>
-            </TooltipContent>
-        </Tooltip>
+        <Hint message={title}>
+            <Button
+                size="icon"
+                variant="ghost"
+                className="dark:hover:bg-input/50 size-8 rounded-sm"
+                onClick={onClick}
+            >
+                {children}
+            </Button>
+        </Hint>
     );
 };

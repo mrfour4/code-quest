@@ -3,14 +3,15 @@ import { useState } from "react";
 type Props = {
     value: string;
     onChange: (value: string) => void;
+    editable?: boolean;
 };
 
-export const LabelInput = ({ value, onChange }: Props) => {
-    const [editing, setEditing] = useState(true);
+export const LabelInput = ({ value, onChange, editable = true }: Props) => {
+    const [editing, setEditing] = useState(false);
 
     const [text, setText] = useState(value);
 
-    if (editing) {
+    if (editable && editing) {
         return (
             <input
                 autoFocus

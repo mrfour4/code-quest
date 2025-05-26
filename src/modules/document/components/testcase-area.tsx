@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Results } from "@/modules/code-editor/components/results/results";
+import { Results } from "@/modules/code-editor/components/results";
 import { Testcase } from "@/modules/code-editor/components/testcase";
 import { FlaskConical, Terminal } from "lucide-react";
 import { useState } from "react";
