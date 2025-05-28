@@ -28,8 +28,8 @@ export const Header = ({ preloadedDocument }: Props) => {
     }
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 h-16 border-b dark:bg-[#121215]">
-            <div className="flex size-full items-center justify-between border-b px-4 py-3">
+        <header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
+            <div className="flex size-full items-center justify-between px-4 py-3">
                 <Logo />
 
                 <div className="w-1/3 px-4">

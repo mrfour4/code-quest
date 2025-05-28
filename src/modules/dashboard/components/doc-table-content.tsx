@@ -4,15 +4,25 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useListDocuments } from "../api/documents";
 import { ITEM_PER_PAGE } from "../constants";
-import { DocumentRow } from "./document-row";
+import { DocumentRow, DocumentRowSkeleton } from "./document-row";
 import { NewDocButton } from "./new-doc-btn";
+
+export const DocumentTableSkeleton = () => {
+    return (
+        <div className="flex flex-col items-center justify-center rounded-md border bg-[#121215]">
+            <DocumentRowSkeleton />
+            <DocumentRowSkeleton />
+            <DocumentRowSkeleton />
+        </div>
+    );
+};
 
 export const DocumentTableContent = () => {
     const { results, isLoading, loadMore, status } = useListDocuments();
     const { filters } = useFilters();
 
     if (status === "LoadingFirstPage") {
-        return <div>Loading...</div>;
+        return <DocumentTableSkeleton />;
     }
 
     return (

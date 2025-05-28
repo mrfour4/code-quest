@@ -9,13 +9,13 @@ export const TestCaseArea = () => {
     const [activeTab, setActiveTab] = useState("testcase");
 
     return (
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col overflow-hidden">
             <Tabs
                 value={activeTab}
                 onValueChange={setActiveTab}
                 className="bg-border flex h-full flex-col rounded-md border"
             >
-                <div className="bg-accent flex h-10 items-center justify-between border-b px-2">
+                <div className="bg-accent flex h-10 items-center justify-between rounded-t-md border-b px-2">
                     <TabsList>
                         <TabsTrigger value="testcase">
                             <FlaskConical className="text-amber-500" />

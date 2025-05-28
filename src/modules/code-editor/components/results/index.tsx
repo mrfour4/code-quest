@@ -103,7 +103,7 @@ const errorResults: TestResult[] = [
 ];
 
 export const Results = () => {
-    const [results, setResults] = useImmer<TestResult[]>(errorResults);
+    const [results, setResults] = useImmer<TestResult[]>(initialResults);
     const [activeResultCase, setActiveResultCase] = useImmer(
         results[0]?.testCaseId,
     );

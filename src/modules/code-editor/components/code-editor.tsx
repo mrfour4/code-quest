@@ -3,24 +3,36 @@
 import { Button } from "@/components/ui/button";
 import { useClerk } from "@clerk/nextjs";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { AlignLeft, Play, RotateCcw } from "lucide-react";
+import { AlignLeft, Loader2, Play, RotateCcw } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useRef, useState } from "react";
 import { ActionSelector } from "./action-selector";
 import { LanguageSelector } from "./language-selector";
 
-type Props = {
-    size: number;
-};
+const sampleCode = `function twoSum(nums, target) {
+  const pairIdx = {};
+  
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
+    if (target - num in pairIdx) {
+      return [i, pairIdx[target - num]];
+    }
+    pairIdx[num] = i;
+  }
+};`;
 
-export const CodeEditor = ({ size }: Props) => {
+export const CodeEditor = () => {
     const clerk = useClerk();
 
     const [language, setLanguage] = useState("javascript");
     const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
     if (!clerk.loaded) {
-        return <div className="bg-input size-full">Loading...</div>;
+        return (
+            <div className="bg-border flex size-full items-center justify-center rounded-b-md border border-t-0">
+                <Loader2 className="text-muted-foreground size-6 animate-spin" />
+            </div>
+        );
     }
 
     const onMount: OnMount = (editor) => {
@@ -45,20 +57,8 @@ export const CodeEditor = ({ size }: Props) => {
         }
     };
 
-    const sampleCode = `function twoSum(nums, target) {
-  const pairIdx = {};
-  
-  for (let i = 0; i < nums.length; i++) {
-    const num = nums[i];
-    if (target - num in pairIdx) {
-      return [i, pairIdx[target - num]];
-    }
-    pairIdx[num] = i;
-  }
-};`;
-
     return (
-        <div className="bg-border h-full overflow-hidden rounded-b-md border">
+        <div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
             <div className="flex items-center justify-between p-1">
                 <LanguageSelector
                     value={language}
@@ -87,7 +87,7 @@ export const CodeEditor = ({ size }: Props) => {
                     </Button>
                 </div>
             </div>
-            <div style={{ height: `calc(${size}vh - 80px)` }}>
+            <div className="h-full overflow-hidden">
                 <Editor
                     height="100%"
                     onMount={onMount}
@@ -98,19 +98,20 @@ export const CodeEditor = ({ size }: Props) => {
                         fontSize: 15,
                         fontWeight: "400",
                         automaticLayout: true,
+                        scrollBeyondLastLine: false,
                         padding: { top: 20, bottom: 16 },
                         fontFamily: "Fira Code",
                         fontLigatures: true,
                         cursorBlinking: "smooth",
                         smoothScrolling: true,
                         lineHeight: 1.4,
+                        renderWhitespace: "none",
+                        minimap: { enabled: false },
+                        contextmenu: false,
                         scrollbar: {
                             verticalScrollbarSize: 8,
                             horizontalScrollbarSize: 8,
                         },
-                        renderWhitespace: "none",
-                        minimap: { enabled: false },
-                        contextmenu: false,
                         stickyScroll: {
                             enabled: false,
                         },

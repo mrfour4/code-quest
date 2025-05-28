@@ -55,7 +55,7 @@ export const GenerativeMenuSwitch = ({
                     editor.chain().unsetHighlight().run();
                 },
             }}
-            className="border-muted bg-background flex w-fit max-w-[90vw] overflow-hidden rounded-md border shadow-xl"
+            className="bg-popover border-muted flex w-fit max-w-[90vw] overflow-hidden rounded-md border shadow-xl"
         >
             {open && <AISelector onOpenChange={onOpenChange} />}
             {!open && (

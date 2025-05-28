@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     ClientSideSuspense,
     useOthers,
@@ -42,9 +43,13 @@ export const Avatars = () => {
     );
 };
 
+export const AvatarSkeleton = () => {
+    return <Skeleton className="size-8 rounded-full" />;
+};
+
 export const AvatarStack = () => {
     return (
-        <ClientSideSuspense fallback={<div>Avatars loading...</div>}>
+        <ClientSideSuspense fallback={<AvatarSkeleton />}>
             <Avatars />
         </ClientSideSuspense>
     );

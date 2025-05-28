@@ -28,7 +28,7 @@ export const ResultsTestcaseTabs = ({ results, active, onChange }: Props) => {
                                 "size-1 rounded-full",
                                 result.status === "accepted"
                                     ? "bg-green-400"
-                                    : "bg-red-400",
+                                    : "bg-red-500",
                             )}
                         />
                         Case {result.testCaseId}

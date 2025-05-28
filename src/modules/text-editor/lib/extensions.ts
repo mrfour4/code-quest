@@ -33,7 +33,7 @@ const placeholder = Placeholder;
 const tiptapLink = TiptapLink.configure({
     HTMLAttributes: {
         class: cx(
-            "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer",
+            "text-muted-foreground hover:text-primary cursor-pointer underline underline-offset-[3px] transition-colors",
         ),
     },
 });
@@ -42,72 +42,72 @@ const tiptapImage = TiptapImage.extend({
     addProseMirrorPlugins() {
         return [
             UploadImagesPlugin({
-                imageClass: cx("opacity-40 rounded-lg border border-stone-200"),
+                imageClass: cx("rounded-lg border border-stone-200 opacity-40"),
             }),
         ];
     },
 }).configure({
     allowBase64: true,
     HTMLAttributes: {
-        class: cx("rounded-lg border border-muted"),
+        class: cx("border-muted rounded-lg border"),
     },
 });
 
 const updatedImage = UpdatedImage.configure({
     HTMLAttributes: {
-        class: cx("rounded-lg border border-muted"),
+        class: cx("border-muted rounded-lg border"),
     },
 });
 
 const taskList = TaskList.configure({
     HTMLAttributes: {
-        class: cx("not-prose pl-2 "),
+        class: cx("not-prose pl-2"),
     },
 });
 const taskItem = TaskItem.configure({
     HTMLAttributes: {
-        class: cx("flex gap-2 items-start my-4"),
+        class: cx("my-4 flex items-start gap-2"),
     },
     nested: true,
 });
 
 const horizontalRule = HorizontalRule.configure({
     HTMLAttributes: {
-        class: cx("mt-4 mb-6 border-t border-muted-foreground"),
+        class: cx("border-muted-foreground mt-4 mb-6 border-t"),
     },
 });
 
 const starterKit = StarterKit.configure({
     bulletList: {
         HTMLAttributes: {
-            class: cx("list-disc list-outside leading-3 -mt-2"),
+            class: cx("-mt-2 list-outside list-disc leading-3"),
         },
     },
     orderedList: {
         HTMLAttributes: {
-            class: cx("list-decimal list-outside leading-3 -mt-2"),
+            class: cx("-mt-2 list-outside list-decimal leading-3"),
         },
     },
     listItem: {
         HTMLAttributes: {
-            class: cx("leading-normal -mb-2"),
+            class: cx("-mb-2 leading-normal"),
         },
     },
     blockquote: {
         HTMLAttributes: {
-            class: cx("border-l-4 border-primary"),
+            class: cx("border-primary border-l-4"),
         },
     },
     codeBlock: {
         HTMLAttributes: {
             class: cx(
-                "rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium",
+                "bg-popover text-muted-foreground rounded-md border p-5 font-mono font-medium",
             ),
         },
     },
     code: {
         HTMLAttributes: {
-            class: cx("rounded-md bg-muted  px-1.5 py-1 font-mono font-medium"),
+            class: cx("rounded-md px-1.5 py-1 font-medium"),
             spellcheck: "false",
         },
     },
@@ -123,7 +123,7 @@ const codeBlockLowlight = CodeBlockLowlight.configure({ lowlight });
 
 const youtube = Youtube.configure({
     HTMLAttributes: {
-        class: cx("rounded-lg border border-muted"),
+        class: cx("border-muted rounded-lg border"),
     },
     inline: false,
 });
@@ -137,7 +137,7 @@ const twitter = Twitter.configure({
 
 const mathematics = Mathematics.configure({
     HTMLAttributes: {
-        class: cx("text-foreground rounded p-1 hover:bg-accent cursor-pointer"),
+        class: cx("text-foreground hover:bg-accent cursor-pointer rounded p-1"),
     },
     katexOptions: {
         throwOnError: false,

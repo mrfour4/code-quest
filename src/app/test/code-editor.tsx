@@ -417,7 +417,6 @@ ReferenceError: ${errorMessage}
 
     return (
         <div className="flex h-screen flex-col overflow-hidden border border-gray-700 bg-gray-900">
-            {/* Header */}
             <div className="flex h-12 flex-shrink-0 items-center justify-between border-b border-gray-700 bg-gray-800 px-4">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
@@ -473,7 +472,6 @@ ReferenceError: ${errorMessage}
                 </div>
             </div>
 
-            {/* Resizable Panels */}
             <div className="flex-1 overflow-hidden">
                 <PanelGroup direction="vertical">
                     {/* Editor Panel */}

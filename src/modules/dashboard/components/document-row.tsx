@@ -1,6 +1,7 @@
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import { PencilLine, Trash } from "lucide-react";
 import Link from "next/link";
@@ -86,5 +87,21 @@ export const DocumentRow = ({ doc }: Props) => {
                 onCancel={() => setOpen(false)}
             />
         </>
+    );
+};
+
+export const DocumentRowSkeleton = () => {
+    return (
+        <div className="flex h-20 w-full items-center border-b p-4 last:border-b-0">
+            <div className="flex w-full items-center gap-x-3">
+                <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
+                    <Skeleton className="size-5 rounded" />
+                </div>
+                <div className="flex flex-col gap-y-2">
+                    <Skeleton className="h-4 w-32 rounded" />
+                    <Skeleton className="h-3 w-24 rounded" />
+                </div>
+            </div>
+        </div>
     );
 };

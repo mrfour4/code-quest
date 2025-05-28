@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useClerk, useOrganizationList } from "@clerk/nextjs";
 import { Building2, Folders, Settings } from "lucide-react";
@@ -17,7 +18,7 @@ export const SidebarOrganization = ({ orgId }: Props) => {
     const { redirectToOrganizationProfile } = useClerk();
 
     if (!isLoaded) {
-        return <div>loading...</div>;
+        return <SidebarOrganizationSkeleton />;
     }
 
     const orgs = userMemberships.data.map((mem) => ({
@@ -56,6 +57,16 @@ export const SidebarOrganization = ({ orgId }: Props) => {
                     </button>
                 </SidebarItem>
             ))}
+        </div>
+    );
+};
+
+export const SidebarOrganizationSkeleton = () => {
+    return (
+        <div className="space-y-1">
+            <Skeleton className="h-9 w-full rounded-sm" />
+            <Skeleton className="h-9 w-full rounded-sm" />
+            <Skeleton className="h-9 w-full rounded-sm" />
         </div>
     );
 };

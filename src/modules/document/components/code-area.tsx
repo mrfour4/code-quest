@@ -14,7 +14,6 @@ import { TabValue } from "./types";
 
 export const CodeArea = () => {
     const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);
-    const [sizes, setSizes] = useState<number[]>([]);
 
     return (
         <Tabs
@@ -22,7 +21,7 @@ export const CodeArea = () => {
             onValueChange={(value) => setActiveTab(value as TabValue)}
             className="h-full gap-0 overflow-hidden rounded-md"
         >
-            <div className="bg-accent flex h-10 items-center justify-between px-2">
+            <div className="bg-accent flex h-10 shrink-0 items-center justify-between rounded-t-md border border-b-0 px-2">
                 <TabsList>
                     <TabsTrigger value={TabValue.Editor}>
                         <CodeXml className="text-green-500" />
@@ -37,16 +36,11 @@ export const CodeArea = () => {
             </div>
             <TabsContent
                 value={TabValue.Editor}
-                className="h-[calc(100%-40px)] p-0 data-[state=active]:flex data-[state=active]:flex-col"
+                className="h-full p-0 data-[state=active]:flex data-[state=active]:flex-col"
             >
-                <ResizablePanelGroup
-                    direction="vertical"
-                    onLayout={(sizes) => {
-                        setSizes(sizes);
-                    }}
-                >
+                <ResizablePanelGroup direction="vertical">
                     <ResizablePanel defaultSize={60} minSize={20}>
-                        <CodeEditor size={sizes[0]} />
+                        <CodeEditor />
                     </ResizablePanel>
 
                     <ResizableHandle withHandle className="my-2" />
@@ -56,10 +50,7 @@ export const CodeArea = () => {
                     </ResizablePanel>
                 </ResizablePanelGroup>
             </TabsContent>
-            <TabsContent
-                value={TabValue.Canvas}
-                className="mt-2 border border-t dark:bg-[#101011]"
-            >
+            <TabsContent value={TabValue.Canvas}>
                 <Canvas />
             </TabsContent>
         </Tabs>
