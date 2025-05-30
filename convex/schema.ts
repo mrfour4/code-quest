@@ -17,4 +17,10 @@ export default defineSchema({
             searchField: "title",
             filterFields: ["orgId", "type"],
         }),
+    solutions: defineTable({
+        documentId: v.id("documents"),
+        language: v.string(),
+        code: v.string(),
+        testCases: v.string(),
+    }).index("by_documentId", ["documentId"]),
 });

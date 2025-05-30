@@ -25,13 +25,19 @@ export default async function DocumentPage({ params }: Props) {
         { token },
     );
 
+    const preloadedSolution = await preloadQuery(api.solutions.get, {
+        documentId,
+    });
+
     return (
         <Room documentId={documentId}>
             <div className="flex h-screen flex-col overflow-hidden">
                 <Header preloadedDocument={preloadedDocument} />
                 <main className="mt-16 flex size-full">
                     <div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-                        <DocumentContent />
+                        <DocumentContent
+                            preloadedSolution={preloadedSolution}
+                        />
                     </div>
                 </main>
             </div>

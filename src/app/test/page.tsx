@@ -1,9 +1,12 @@
-import CodeEditor from "./code-editor";
+import { Suspense } from "react";
+import { TodoWrapper } from "./todo-wrapper";
 
-export default function Home() {
+export default async function Home() {
     return (
         <div className="h-screen bg-gray-900">
-            <CodeEditor />
+            <Suspense fallback={<div className="text-white">Loading...</div>}>
+                <TodoWrapper />
+            </Suspense>
         </div>
     );
 }

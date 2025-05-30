@@ -474,7 +474,6 @@ ReferenceError: ${errorMessage}
 
             <div className="flex-1 overflow-hidden">
                 <PanelGroup direction="vertical">
-                    {/* Editor Panel */}
                     <Panel defaultSize={60} minSize={30}>
                         <div className="h-full bg-gray-900">
                             <Editor

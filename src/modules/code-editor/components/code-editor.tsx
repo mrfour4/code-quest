@@ -1,33 +1,26 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useClerk } from "@clerk/nextjs";
+import { useMounted } from "@/hooks/use-mounted";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { AlignLeft, Loader2, Play, RotateCcw } from "lucide-react";
+import { useAtom } from "jotai";
+import { AlignLeft, Loader2 } from "lucide-react";
 import { editor } from "monaco-editor";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { codeAtom } from "../atom/code";
+import { languagesAtom } from "../atom/language";
 import { ActionSelector } from "./action-selector";
 import { LanguageSelector } from "./language-selector";
-
-const sampleCode = `function twoSum(nums, target) {
-  const pairIdx = {};
-  
-  for (let i = 0; i < nums.length; i++) {
-    const num = nums[i];
-    if (target - num in pairIdx) {
-      return [i, pairIdx[target - num]];
-    }
-    pairIdx[num] = i;
-  }
-};`;
+import { PublishButton } from "./publish-btn";
+import { RunCodeButton } from "./run-btn";
 
 export const CodeEditor = () => {
-    const clerk = useClerk();
+    const mounted = useMounted();
 
-    const [language, setLanguage] = useState("javascript");
+    const [language, setLanguage] = useAtom(languagesAtom);
+    const [code, setCode] = useAtom(codeAtom);
     const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
-    if (!clerk.loaded) {
+    if (!mounted) {
         return (
             <div className="bg-border flex size-full items-center justify-center rounded-b-md border border-t-0">
                 <Loader2 className="text-muted-foreground size-6 animate-spin" />
@@ -40,7 +33,7 @@ export const CodeEditor = () => {
     };
 
     const onChange = (value?: string) => {
-        console.log("Editor content changed:", value);
+        setCode(value || "");
     };
 
     const onLanguageChange = (value: string) => {
@@ -59,7 +52,7 @@ export const CodeEditor = () => {
 
     return (
         <div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
-            <div className="flex items-center justify-between p-1">
+            <div className="flex items-center justify-between p-1 pr-3">
                 <LanguageSelector
                     value={language}
                     onChange={onLanguageChange}
@@ -68,23 +61,9 @@ export const CodeEditor = () => {
                     <ActionSelector title="Format Code" onClick={onFormatCode}>
                         <AlignLeft />
                     </ActionSelector>
-                    <ActionSelector
-                        title="Reset Editor"
-                        onClick={() => {
-                            console.log("Reset editor action triggered");
-                            // Implement reset editor logic here
-                        }}
-                    >
-                        <RotateCcw />
-                    </ActionSelector>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="mr-4 cursor-pointer bg-green-600 text-white dark:hover:bg-green-700"
-                    >
-                        <Play />
-                        Run Code
-                    </Button>
+
+                    <RunCodeButton />
+                    <PublishButton />
                 </div>
             </div>
             <div className="h-full overflow-hidden">
@@ -92,7 +71,8 @@ export const CodeEditor = () => {
                     height="100%"
                     onMount={onMount}
                     language={language}
-                    defaultValue={sampleCode}
+                    value={code}
+                    onChange={onChange}
                     theme="vs-dark"
                     options={{
                         fontSize: 15,

@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { ConvexClientProvider } from "@/providers/convex-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { Provider as JotaiProvider } from "jotai";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
@@ -32,7 +33,9 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     <ConvexClientProvider>
-                        <NuqsAdapter>{children}</NuqsAdapter>
+                        <NuqsAdapter>
+                            <JotaiProvider>{children}</JotaiProvider>
+                        </NuqsAdapter>
                     </ConvexClientProvider>
                     <Toaster richColors />
                 </ThemeProvider>

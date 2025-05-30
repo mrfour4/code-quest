@@ -17,7 +17,6 @@ export const LabelInput = ({ value, onChange, editable = true }: Props) => {
                 autoFocus
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                onBlur={() => setEditing(false)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
                         setEditing(false);

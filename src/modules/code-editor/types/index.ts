@@ -1,8 +1,14 @@
 import { highlightDiff } from "../lib/utils";
 
+export type InputTestCase = {
+    id: string;
+    label: string;
+    value: string;
+};
+
 export type TestCase = {
     id: string;
-    inputs: { label: string; value: string }[];
+    inputs: InputTestCase[];
     expected: string;
 };
 
@@ -13,6 +19,11 @@ export type TestResult = {
     status: "accepted" | "wrong_answer" | "error";
     runtime: number;
     error?: string;
+};
+
+export type Language = {
+    label: string;
+    value: string;
 };
 
 export type Code = {
