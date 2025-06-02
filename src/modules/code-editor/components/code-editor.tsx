@@ -13,6 +13,7 @@ import { LANGUAGES } from "../constants";
 import { ActionSelector } from "./action-selector";
 import { LanguageSelector } from "./language-selector";
 import { PublishButton } from "./publish-btn";
+import { ResetCodeButton } from "./reset-code";
 import { RunCodeButton } from "./run-btn";
 
 export const CodeEditor = () => {
@@ -70,6 +71,7 @@ export const CodeEditor = () => {
                     <ActionSelector title="Format Code" onClick={onFormatCode}>
                         <AlignLeft />
                     </ActionSelector>
+                    <ResetCodeButton />
 
                     <RunCodeButton />
                     <PublishButton />

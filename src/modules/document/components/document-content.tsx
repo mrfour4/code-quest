@@ -15,20 +15,20 @@ import { api } from "../../../../convex/_generated/api";
 import { CodeArea } from "./code-area";
 
 type Props = {
-    preloadedSolution: Preloaded<typeof api.solutions.get>;
     preLoadedTestCases: Preloaded<typeof api.testCases.get>;
+    preLoadedTemplate: Preloaded<typeof api.templates.get>;
 };
 
 export const DocumentContent = ({
-    preloadedSolution,
     preLoadedTestCases,
+    preLoadedTemplate,
 }: Props) => {
-    const solution = usePreloadedQuery(preloadedSolution);
     const testCases = usePreloadedQuery(preLoadedTestCases);
+    const template = usePreloadedQuery(preLoadedTemplate);
 
     useHydrateAtoms([
-        [codeDataAtom, solution?.code],
-        [languageDataAtom, solution?.language],
+        [codeDataAtom, template?.code],
+        [languageDataAtom, template?.language],
         [testCaseDataAtom, testCases],
     ]);
 

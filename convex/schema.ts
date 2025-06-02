@@ -28,4 +28,15 @@ export default defineSchema({
         documentId: v.id("documents"),
         value: v.string(),
     }).index("by_documentId", ["documentId"]),
+
+    templates: defineTable({
+        documentId: v.id("documents"),
+        language: v.string(),
+        head: v.string(),
+        body: v.string(),
+        tail: v.string(),
+    })
+        .index("by_documentId", ["documentId"])
+        .index("by_language", ["language"])
+        .index("by_documentId_language", ["documentId", "language"]),
 });
