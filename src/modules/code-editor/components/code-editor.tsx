@@ -6,8 +6,10 @@ import { useAtom } from "jotai";
 import { AlignLeft, Loader2 } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useRef } from "react";
+import { toast } from "sonner";
 import { codeAtom } from "../atom/code";
 import { languagesAtom } from "../atom/language";
+import { LANGUAGES } from "../constants";
 import { ActionSelector } from "./action-selector";
 import { LanguageSelector } from "./language-selector";
 import { PublishButton } from "./publish-btn";
@@ -37,7 +39,14 @@ export const CodeEditor = () => {
     };
 
     const onLanguageChange = (value: string) => {
-        setLanguage(value);
+        const selectedLanguage = LANGUAGES.find((lang) => lang.value === value);
+
+        if (!selectedLanguage) {
+            toast.error("Unsupported language selected.");
+            return;
+        }
+
+        setLanguage(selectedLanguage);
     };
 
     const onFormatCode = () => {
@@ -54,7 +63,7 @@ export const CodeEditor = () => {
         <div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
             <div className="flex items-center justify-between p-1 pr-3">
                 <LanguageSelector
-                    value={language}
+                    value={language.value}
                     onChange={onLanguageChange}
                 />
                 <div className="flex items-center gap-2">
@@ -70,7 +79,7 @@ export const CodeEditor = () => {
                 <Editor
                     height="100%"
                     onMount={onMount}
-                    language={language}
+                    language={language.value}
                     value={code}
                     onChange={onChange}
                     theme="vs-dark"

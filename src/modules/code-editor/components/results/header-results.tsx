@@ -1,29 +1,33 @@
 import { cn } from "@/lib/utils";
-import {
-    getOverallStatus,
-    getStatusColor,
-    getStatusText,
-} from "../../lib/utils";
-import { TestResult } from "../../types";
+import { useAtomValue } from "jotai";
+import { resultsAtom } from "../../atom/result";
+import { formatTime, getOverallStatus } from "../../lib/utils";
+import { StatusResult } from "../../types";
 
-type Props = {
-    results: TestResult[];
-};
+export const HeaderResult = () => {
+    const results = useAtomValue(resultsAtom);
+    const status = getOverallStatus(results);
 
-export const HeaderResult = ({ results }: Props) => {
-    const overallStatus = getOverallStatus(results);
-    const colorStatus = getStatusColor(overallStatus || "");
-    const status = getStatusText(overallStatus || "");
+    const runtime = Math.max(...results.map((r) => r.runtime));
 
     return (
         <div className="flex-shrink-0 px-3 pt-2">
             <div className="flex items-center gap-4">
-                <span className={cn("text-xl font-medium", colorStatus)}>
+                <span
+                    className={cn(
+                        "text-xl font-medium",
+                        status === StatusResult.Accepted
+                            ? "text-green-500"
+                            : "text-red-500",
+                    )}
+                >
                     {status}
                 </span>
-                <span className="text-muted-foreground text-sm">
-                    Runtime: {Math.max(...results.map((r) => r.runtime))} ms
-                </span>
+                {runtime > 0 && (
+                    <span className="text-muted-foreground text-sm">
+                        Runtime: {formatTime(runtime)}
+                    </span>
+                )}
             </div>
         </div>
     );

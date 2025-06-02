@@ -1,18 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { TestResult } from "../../types";
+import { useAtomValue } from "jotai";
+import { resultsAtom } from "../../atom/result";
+import { StatusResult } from "../../types";
 
 type Props = {
-    results: TestResult[];
     active: string;
     onChange: (value: string) => void;
 };
 
-export const ResultsTestcaseTabs = ({ results, active, onChange }: Props) => {
+export const ResultsTestcaseTabs = ({ active, onChange }: Props) => {
+    const results = useAtomValue(resultsAtom);
+
     return (
         <div className="flex-shrink-0 px-3">
-            <div className="flex items-center gap-2 shadow-xs">
-                {results.map((result) => (
+            <div className="flex flex-wrap items-center gap-2 shadow-xs">
+                {results.map((result, index) => (
                     <Button
                         key={result.testCaseId}
                         variant="ghost"
@@ -26,12 +29,12 @@ export const ResultsTestcaseTabs = ({ results, active, onChange }: Props) => {
                         <div
                             className={cn(
                                 "size-1 rounded-full",
-                                result.status === "accepted"
+                                result.status === StatusResult.Accepted
                                     ? "bg-green-400"
                                     : "bg-red-500",
                             )}
                         />
-                        Case {result.testCaseId}
+                        Case {index + 1}
                     </Button>
                 ))}
             </div>

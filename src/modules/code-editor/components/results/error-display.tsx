@@ -2,14 +2,17 @@ import { ButtonCopy } from "@/components/button-copy";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { firaCode } from "@/lib/font";
 import { cn } from "@/lib/utils";
+import { useAtomValue } from "jotai";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
 import { useState } from "react";
+import { resultsAtom } from "../../atom/result";
+import { getErrorMessage } from "../../lib/utils";
 
-type Props = {
-    error: string;
-};
+export const ErrorDisplay = () => {
+    const results = useAtomValue(resultsAtom);
+    const errorMsg = getErrorMessage(results);
 
-export const ErrorDisplay = ({ error }: Props) => {
+    const error = results.find((r) => r.error)?.error || "Something went wrong";
     const [isExpanded, setIsExpanded] = useState(false);
     const maxLines = 5;
     const lines = error.split("\n");
@@ -19,7 +22,7 @@ export const ErrorDisplay = ({ error }: Props) => {
         <div className="flex h-full flex-col gap-y-4">
             <div className="flex-shrink-0 px-3 pt-2">
                 <p className="text-xl font-medium text-red-500">
-                    Runtime Error
+                    {errorMsg || "Error"}
                 </p>
             </div>
             <div className="flex-1 overflow-hidden">

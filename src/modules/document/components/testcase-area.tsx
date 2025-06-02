@@ -1,15 +1,27 @@
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { executingAtom } from "@/modules/code-editor/atom/result/execution";
+import { activeTabAtom } from "@/modules/code-editor/atom/tab";
 import { Results } from "@/modules/code-editor/components/results";
 import { Testcase } from "@/modules/code-editor/components/testcase";
-import { FlaskConical, Terminal } from "lucide-react";
-import { useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { FlaskConical, Loader2, Terminal } from "lucide-react";
 import { TestCaseTab } from "./types";
 
 export const TestCaseArea = () => {
-    const [activeTab, setActiveTab] = useState<TestCaseTab>(
-        TestCaseTab.TestCase,
-    );
+    const [activeTab, setActiveTab] = useAtom(activeTabAtom);
+    const isRunning = useAtomValue(executingAtom);
+
+    if (isRunning) {
+        return (
+            <div className="flex h-full flex-col overflow-hidden">
+                <div className="bg-border flex h-full flex-col items-center justify-center gap-2 rounded-md border">
+                    <Loader2 className="text-muted-foreground size-8 animate-spin" />
+                    <p className="text-muted-foreground text-sm">Running...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-full flex-col overflow-hidden">
@@ -20,7 +32,7 @@ export const TestCaseArea = () => {
             >
                 <div className="bg-accent flex h-10 items-center justify-between rounded-t-md border-b px-2">
                     <TabsList>
-                        <TabsTrigger value={TestCaseTab.TestCase}>
+                        <TabsTrigger value="testcase">
                             <FlaskConical className="text-amber-500" />
                             Testcase
                         </TabsTrigger>
@@ -28,7 +40,7 @@ export const TestCaseArea = () => {
                             orientation="vertical"
                             className="mx-1 !h-4/5"
                         />
-                        <TabsTrigger value={TestCaseTab.Result}>
+                        <TabsTrigger value="result">
                             <Terminal className="text-green-500" />
                             Test Result
                         </TabsTrigger>
@@ -36,16 +48,13 @@ export const TestCaseArea = () => {
                 </div>
 
                 <TabsContent
-                    value={TestCaseTab.TestCase}
+                    value="testcase"
                     className="flex-1 overflow-hidden"
                 >
                     <Testcase />
                 </TabsContent>
 
-                <TabsContent
-                    value={TestCaseTab.Result}
-                    className="flex-1 overflow-hidden"
-                >
+                <TabsContent value="result" className="flex-1 overflow-hidden">
                     <Results />
                 </TabsContent>
             </Tabs>

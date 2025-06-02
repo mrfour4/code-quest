@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Canvas } from "@/modules/canvas/components/canvas";
 import { CodeEditor } from "@/modules/code-editor/components/code-editor";
 import { CodeXml, Palette } from "lucide-react";
 import { useState } from "react";
@@ -51,7 +50,8 @@ export const CodeArea = () => {
                 </ResizablePanelGroup>
             </TabsContent>
             <TabsContent value={TabValue.Canvas}>
-                <Canvas />
+                Canvas
+                {/* <Canvas /> */}
             </TabsContent>
         </Tabs>
     );

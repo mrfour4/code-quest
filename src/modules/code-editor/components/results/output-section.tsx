@@ -1,3 +1,4 @@
+import { ButtonCopy } from "@/components/button-copy";
 import { firaCode } from "@/lib/font";
 import { cn } from "@/lib/utils";
 import { DiffValue } from "../../types";
@@ -18,15 +19,16 @@ export const OutputResultSection = ({ label, value, diff, status }: Props) => {
             </h3>
             <div
                 className={cn(
-                    "bg-border rounded-md p-3 text-sm break-all",
+                    "bg-border group relative rounded-md p-3 text-sm break-all",
                     firaCode.className,
                 )}
             >
-                {status === "wrong_answer" ? (
-                    <HighlightContent value={diff} origin={value} />
-                ) : (
-                    value
-                )}
+                <HighlightContent value={diff} origin={value} />
+
+                <ButtonCopy
+                    value={value}
+                    className="invisible absolute top-2 right-2 group-hover:visible"
+                />
             </div>
         </div>
     );
