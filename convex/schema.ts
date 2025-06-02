@@ -23,4 +23,9 @@ export default defineSchema({
         code: v.string(),
         testCases: v.string(),
     }).index("by_documentId", ["documentId"]),
+
+    testCases: defineTable({
+        documentId: v.id("documents"),
+        value: v.string(),
+    }).index("by_documentId", ["documentId"]),
 });

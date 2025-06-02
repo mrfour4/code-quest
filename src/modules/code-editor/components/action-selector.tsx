@@ -5,9 +5,15 @@ type Props = {
     children?: React.ReactNode;
     title: string;
     onClick: () => void;
+    disabled?: boolean;
 };
 
-export const ActionSelector = ({ children, title, onClick }: Props) => {
+export const ActionSelector = ({
+    children,
+    title,
+    disabled = false,
+    onClick,
+}: Props) => {
     return (
         <Hint message={title}>
             <Button
@@ -15,6 +21,7 @@ export const ActionSelector = ({ children, title, onClick }: Props) => {
                 variant="ghost"
                 className="dark:hover:bg-input/50 size-8 rounded-sm"
                 onClick={onClick}
+                disabled={disabled}
             >
                 {children}
             </Button>

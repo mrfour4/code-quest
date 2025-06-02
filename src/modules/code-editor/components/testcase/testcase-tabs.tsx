@@ -12,7 +12,7 @@ export const InputTestcaseTabs = () => {
     const activeId = useAtomValue(activeTestCaseIdAtom);
 
     return (
-        <div className="shrink-0 px-4 py-2">
+        <div className="flex-1 shrink-0">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-4">
                 {testCaseIds.map((id, index) => (
                     <TestCaseTab

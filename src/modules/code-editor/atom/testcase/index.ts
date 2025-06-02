@@ -1,17 +1,15 @@
 import { atom } from "jotai";
-import { withImmer } from "jotai-immer";
-import { atomFamily, atomWithStorage } from "jotai/utils";
+import { atomWithImmer } from "jotai-immer";
+import { atomFamily } from "jotai/utils";
 import { nanoid } from "nanoid";
 import { INITIAL_TEST_CASE } from "../../constants";
 import { TestCase } from "../../types";
 import { activeTestCaseIdAtom } from "./active";
 
-export const testCasesAtoms = withImmer(
-    atomWithStorage<TestCase[]>("testCases", [INITIAL_TEST_CASE]),
-);
+export const testCasesAtoms = atomWithImmer<TestCase[]>([INITIAL_TEST_CASE]);
 
-export const testCaseDataAtom = atom(null, (_, set, data?: TestCase[]) => {
-    set(testCasesAtoms, () => data ?? [INITIAL_TEST_CASE]);
+export const testCaseDataAtom = atom(null, (_, set, data: TestCase[]) => {
+    set(testCasesAtoms, () => (data.length > 0 ? data : [INITIAL_TEST_CASE]));
 });
 
 export const testCasesFamilyAtom = atomFamily((id: string) =>

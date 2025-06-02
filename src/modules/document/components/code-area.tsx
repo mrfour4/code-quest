@@ -8,8 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeEditor } from "@/modules/code-editor/components/code-editor";
 import { CodeXml, Palette } from "lucide-react";
 import { useState } from "react";
+import { TabValue } from "../types";
 import { TestCaseArea } from "./testcase-area";
-import { TabValue } from "./types";
 
 export const CodeArea = () => {
     const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);

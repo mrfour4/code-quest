@@ -16,15 +16,20 @@ import { CodeArea } from "./code-area";
 
 type Props = {
     preloadedSolution: Preloaded<typeof api.solutions.get>;
+    preLoadedTestCases: Preloaded<typeof api.testCases.get>;
 };
 
-export const DocumentContent = ({ preloadedSolution }: Props) => {
+export const DocumentContent = ({
+    preloadedSolution,
+    preLoadedTestCases,
+}: Props) => {
     const solution = usePreloadedQuery(preloadedSolution);
+    const testCases = usePreloadedQuery(preLoadedTestCases);
 
     useHydrateAtoms([
         [codeDataAtom, solution?.code],
         [languageDataAtom, solution?.language],
-        [testCaseDataAtom, solution?.testCases],
+        [testCaseDataAtom, testCases],
     ]);
 
     return (

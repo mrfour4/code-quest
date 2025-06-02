@@ -33,20 +33,3 @@ export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
     54: 54, // C++ (GCC 14.1.0)
     51: 51, // C# (Mono
 };
-
-export const JUDGE0_LANGUAGES: Language[] = [
-    { id: 102, label: "JavaScript", value: "javascript" },
-    { id: 109, label: "Python", value: "python" },
-    { id: 91, label: "Java", value: "java" },
-    { id: 54, label: "C++", value: "cpp" },
-    { id: 51, label: "C#", value: "csharp" },
-];
-
-// export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
-//     javascript: 102, // JavaScript (Node.js 22.08.0)
-//     typescript: 101, // TypeScript (5.6.2)
-//     python: 109, // Python (3.13.2)
-//     java: 91, // Java (JDK 17.0.6)
-//     cpp: 54, // C++ (GCC 14.1.0)
-//     csharp: 51, // C# (Mono 6.6.0.161)
-// };

@@ -1,4 +1,4 @@
-import { TestCaseTab } from "@/modules/document/components/types";
+import { TestCaseTab } from "@/modules/document/types";
 import { atom } from "jotai";
 import { toast } from "sonner";
 import { resultsAtom } from ".";

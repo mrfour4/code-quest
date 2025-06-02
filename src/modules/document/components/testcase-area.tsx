@@ -6,7 +6,7 @@ import { Results } from "@/modules/code-editor/components/results";
 import { Testcase } from "@/modules/code-editor/components/testcase";
 import { useAtom, useAtomValue } from "jotai";
 import { FlaskConical, Loader2, Terminal } from "lucide-react";
-import { TestCaseTab } from "./types";
+import { TestCaseTab } from "../types";
 
 export const TestCaseArea = () => {
     const [activeTab, setActiveTab] = useAtom(activeTabAtom);
