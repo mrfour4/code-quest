@@ -1,5 +1,6 @@
 "use client";
 
+import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { useAuth, useOrganization } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
@@ -32,9 +33,16 @@ export const NewDocButton = () => {
     };
 
     return (
-        <Button onClick={onClick} disabled={isPending}>
-            <Plus />
-            <span className="hidden lg:block">New document</span>
-        </Button>
+        <Hint message="New document">
+            <Button
+                onClick={onClick}
+                disabled={isPending}
+                variant="secondary"
+                size="icon"
+                className="bg-input/50 hover:bg-input/70"
+            >
+                <Plus />
+            </Button>
+        </Hint>
     );
 };

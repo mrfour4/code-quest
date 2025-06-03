@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProblems } from "@/modules/dashboard/api/documents";
 import { useListCategories } from "@/modules/document/api/categories";
 import { getCategoryOpts, getTagOpts } from "../lib/utils";
@@ -13,20 +14,31 @@ export const ProblemTable = () => {
     const isLoading = problems.isPending || categories.isPending;
 
     if (isLoading) {
-        return <div className="container mx-auto py-10">Loading...</div>;
+        return <ProblemTableSkeleton />;
     }
 
     const categoryOpts = getCategoryOpts(categories.data ?? []);
     const tagOpts = getTagOpts();
 
     return (
-        <div className="mx-auto px-1 py-10">
+        <div className="mx-auto mt-10 max-w-3xl px-1 py-10">
             <DataTable
                 columns={columns}
                 data={problems.data ?? []}
                 categoryOpts={categoryOpts}
                 tagOpts={tagOpts}
             />
+        </div>
+    );
+};
+
+export const ProblemTableSkeleton = () => {
+    return (
+        <div className="mx-auto mt-10 max-w-3xl space-y-4 px-1 py-10">
+            <Skeleton className="h-10 w-1/3" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
         </div>
     );
 };

@@ -9,9 +9,7 @@ export default async function ProblemsLayout({ children }: Props) {
         <div className="flex h-screen w-screen flex-col overflow-hidden">
             <Header />
             <main className="bg-border flex size-full">
-                <div className="mx-auto mt-16 size-full max-w-3xl">
-                    {children}
-                </div>
+                <div className="mx-auto mt-16 size-full">{children}</div>
             </main>
         </div>
     );
