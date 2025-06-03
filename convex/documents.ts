@@ -172,6 +172,31 @@ export const list = query({
     },
 });
 
+export const problems = query({
+    args: {},
+    handler: async (ctx) => {
+        const [categories, documents] = await Promise.all([
+            ctx.db.query("categories").collect(),
+            ctx.db
+                .query("documents")
+                .withIndex("by_type", (q) => q.eq("type", "published"))
+                .collect(),
+        ]);
+
+        const problems = documents.map((doc) => {
+            const category = categories.find(
+                (cat) => cat._id === doc.categoryId,
+            );
+
+            return {
+                ...doc,
+                category: category?._id,
+            };
+        });
+        return problems;
+    },
+});
+
 type stringOrNull = string | null;
 
 export async function getCurrentUser(ctx: QueryCtx) {

@@ -19,10 +19,11 @@ export default async function DocumentPage({ params }: Props) {
         throw new Error("No auth token found");
     }
 
-    const [preloadedDocument, preloadedTestCases] = await Promise.all([
-        preloadQuery(api.documents.get, { id: documentId }, { token }),
-        preloadQuery(api.testCases.get, { documentId }),
-    ]);
+    const preloadedDocument = await preloadQuery(
+        api.documents.get,
+        { id: documentId },
+        { token },
+    );
 
     return (
         <Room documentId={documentId}>
@@ -31,7 +32,6 @@ export default async function DocumentPage({ params }: Props) {
                 <main className="mt-16 flex size-full">
                     <div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
                         <DocumentContent
-                            preLoadedTestCases={preloadedTestCases}
                             preLoadedDocument={preloadedDocument}
                         />
                     </div>

@@ -65,3 +65,7 @@ export const useListDocuments = () => {
         status,
     };
 };
+
+export const useGetProblems = () => {
+    return useQuery(convexQuery(api.documents.problems, {}));
+};
