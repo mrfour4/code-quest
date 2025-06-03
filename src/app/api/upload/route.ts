@@ -20,13 +20,12 @@ export async function POST(req: Request) {
         req.headers.get("content-type") || "application/octet-stream";
     const ext = `.${contentType.split("/")[1] || "bin"}`;
 
-    // always create unique filename
     const finalName = `${filename.replace(/\.[^/.]+$/, "")}-${nanoid()}${ext}`;
 
     const blob = await put(finalName, file, {
         contentType,
         access: "public",
-        allowOverwrite: false, // vì đã có tên unique, không cần ghi đè
+        allowOverwrite: false,
     });
 
     return NextResponse.json(blob);

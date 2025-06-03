@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useGetCurrentDocument } from "@/modules/dashboard/api/documents";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Plus } from "lucide-react";
 import { testCasesFamilyAtom } from "../../atom/testcase";
@@ -20,7 +21,9 @@ export const InputsTestCase = () => {
     const update = useSetAtom(updateInputInTestCase);
     const updateExpected = useSetAtom(updateExpectedInTestCase);
 
-    if (!currentTestCase) {
+    const { data: document } = useGetCurrentDocument();
+
+    if (!currentTestCase || !document) {
         return null;
     }
 
@@ -30,7 +33,10 @@ export const InputsTestCase = () => {
                 <InputSection
                     key={input.id}
                     input={input}
-                    canRemove={currentTestCase.inputs.length > 1}
+                    canRemove={
+                        currentTestCase.inputs.length > 1 &&
+                        document.type !== "published"
+                    }
                     onUpdate={(value, field) => update(input.id, field, value)}
                     onRemove={() => remove(input.id)}
                 />

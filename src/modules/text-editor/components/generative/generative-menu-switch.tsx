@@ -5,6 +5,7 @@ import { EditorBubble, removeAIHighlight, useEditor } from "novel";
 import { type ReactNode, useEffect, useState } from "react";
 import { NodeSelector } from "../selectors/node-selector";
 import { AISelector } from "./ai-selector";
+
 interface Props {
     children: ReactNode;
     open: boolean;
