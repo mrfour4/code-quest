@@ -46,8 +46,12 @@ export const update = mutation({
         id: v.id("documents"),
         title: v.optional(v.string()),
         type: v.optional(v.union(v.literal("draft"), v.literal("published"))),
+        categoryId: v.optional(v.id("categories")),
+        tag: v.optional(
+            v.union(v.literal("easy"), v.literal("medium"), v.literal("hard")),
+        ),
     },
-    handler: async (ctx, { id, title, type }) => {
+    handler: async (ctx, { id, ...rest }) => {
         const document = await getAccessibleDocument(ctx, id);
 
         if (document.role !== Role.Admin) {
@@ -57,8 +61,7 @@ export const update = mutation({
         }
 
         return await ctx.db.patch(id, {
-            title: title ?? document.title,
-            type: type ?? document.type,
+            ...rest,
             updatedAt: Date.now(),
         });
     },
@@ -83,6 +86,23 @@ export const get = query({
     args: { id: v.id("documents") },
     handler: async (ctx, args) => {
         const document = await getAccessibleDocument(ctx, args.id);
+        return document;
+    },
+});
+
+export const getPublished = query({
+    args: { id: v.id("documents") },
+    handler: async (ctx, { id }) => {
+        const document = await ctx.db.get(id);
+
+        if (!document) {
+            throw new ConvexError("Document not found");
+        }
+
+        if (document.type !== "published") {
+            throw new ConvexError("Document is not published");
+        }
+
         return document;
     },
 });

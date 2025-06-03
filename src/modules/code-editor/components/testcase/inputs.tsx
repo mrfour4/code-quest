@@ -23,7 +23,6 @@ export const InputsTestCase = () => {
     if (!currentTestCase) {
         return null;
     }
-    console.log("🚀 ~ InputsTestCase ~ currentTestCase:", currentTestCase);
 
     return (
         <div className="space-y-3" key={activeTestCaseId}>

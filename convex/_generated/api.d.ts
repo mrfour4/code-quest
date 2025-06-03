@@ -13,8 +13,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as categories from "../categories.js";
 import type * as documents from "../documents.js";
-import type * as solutions from "../solutions.js";
 import type * as templates from "../templates.js";
 import type * as testCases from "../testCases.js";
 
@@ -27,8 +27,8 @@ import type * as testCases from "../testCases.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  categories: typeof categories;
   documents: typeof documents;
-  solutions: typeof solutions;
   templates: typeof templates;
   testCases: typeof testCases;
 }>;
