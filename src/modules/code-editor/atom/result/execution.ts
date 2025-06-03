@@ -2,9 +2,8 @@ import { TestCaseTab } from "@/modules/document/types";
 import { atom } from "jotai";
 import { toast } from "sonner";
 import { resultsAtom } from ".";
-import { runCode } from "../../actions/execute";
+import { runBatchedCode } from "../../actions/execute";
 import { generateStdinFromInputs } from "../../lib/execute";
-import { TestResult } from "../../types";
 import { languagesAtom } from "../language";
 import { activeTabAtom } from "../tab";
 import { testCasesAtoms } from "../testcase";
@@ -18,38 +17,36 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
     try {
         set(executingAtom, true);
         set(activeTabAtom, TestCaseTab.Result);
-        const results: TestResult[] = await Promise.all(
-            testCases.map(async (testCase) => {
-                const stdin = generateStdinFromInputs(testCase.inputs);
-                const result = await runCode({
-                    languageId: language.id,
-                    sourceCode: code,
-                    stdin,
-                    expectedOutput: testCase.expected,
-                });
-                console.log("🚀 ~ testCases.map ~ result:", result);
 
-                const output = (result.stdout || "").trim();
-                const expected = testCase.expected;
-                const runtime = parseFloat(result.time || "0");
-                const error =
-                    result.error ||
-                    result.stderr ||
-                    result.compile_output ||
-                    "";
+        const submissions = testCases.map((testCase) => ({
+            languageId: language.id,
+            sourceCode: code,
+            stdin: generateStdinFromInputs(testCase.inputs),
+            expectedOutput: testCase.expected,
+        }));
 
-                return {
-                    testCaseId: testCase.id,
-                    status: result.status?.description || "Error",
-                    output,
-                    expected,
-                    error,
-                    runtime,
-                };
-            }),
-        );
+        const batchedResults = await runBatchedCode(submissions);
 
-        set(resultsAtom, results);
+        console.log("🚀 ~ executeCodeAtom ~ batchedResults:", batchedResults);
+
+        const resultsData = batchedResults.map((result, index) => {
+            const testCase = testCases[index];
+            const output = (result.stdout || "").trim();
+            const expected = testCase.expected;
+            const runtime = parseFloat(result.time || "0");
+            const error =
+                result.error || result.stderr || result.compile_output || "";
+
+            return {
+                testCaseId: testCase.id,
+                status: result.status?.description || "Error",
+                output,
+                expected,
+                error,
+                runtime,
+            };
+        });
+        set(resultsAtom, resultsData);
     } catch (error) {
         console.log("Error running code:", error);
         toast.error(

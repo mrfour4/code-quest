@@ -83,3 +83,7 @@ export function formatTime(value: number) {
         return `${numberFormatter.format(value)} s`;
     }
 }
+
+export function wait(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}

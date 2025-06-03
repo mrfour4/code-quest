@@ -60,3 +60,7 @@ export type ApiResponse = {
     };
     error?: string | null;
 };
+
+export type BatchedApiResponse = {
+    submissions: ApiResponse[];
+};

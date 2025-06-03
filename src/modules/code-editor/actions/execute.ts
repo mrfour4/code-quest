@@ -1,7 +1,12 @@
 "use server";
 
-import { JUDGE0_LANGUAGE_ID_MAP } from "../constants";
-import { ApiResponse } from "../types";
+import {
+    JUDGE0_LANGUAGE_ID_MAP,
+    MAX_RETRIES,
+    RETRY_DELAY_MS,
+} from "../constants";
+import { wait } from "../lib/utils";
+import { ApiResponse, BatchedApiResponse } from "../types";
 
 type Props = {
     languageId: number;
@@ -79,3 +84,101 @@ export const runCodeWithJudge0 = async ({
 
     return result as ApiResponse;
 };
+
+export const runBatchedCode = async (submissions: Props[]) => {
+    const response = await fetch(
+        `${process.env.SERVER_EXECUTION_URL}/submissions/batch?base64_encoded=false`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                submissions: submissions.map((s) => ({
+                    language_id: s.languageId,
+                    source_code: s.sourceCode,
+                    stdin: s.stdin,
+                    expected_output: s.expectedOutput,
+                })),
+            }),
+        },
+    );
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Batched execution failed: ${errorText}`);
+    }
+
+    const results = (await response.json()) as ApiResponse[];
+    const tokens = results.map((r) => r.token).join(",");
+
+    const url = `${process.env.SERVER_EXECUTION_URL}/submissions/batch?base64_encoded=false&tokens=${tokens}`;
+
+    return await pollingGetSubmissions(url);
+};
+
+export const runBatchedCodeWithJudge0 = async (submissions: Props[]) => {
+    const response = await fetch(
+        `https://${process.env.RAPIDAPI_HOST}/submissions/batch?base64_encoded=false`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key": process.env.RAPIDAPI_KEY || "",
+                "X-RapidAPI-Host": process.env.RAPIDAPI_HOST || "",
+            },
+            body: JSON.stringify({
+                submissions: submissions.map((s) => ({
+                    language_id:
+                        JUDGE0_LANGUAGE_ID_MAP[s.languageId.toString()],
+                    source_code: s.sourceCode,
+                    stdin: s.stdin,
+                    expected_output: s.expectedOutput,
+                })),
+            }),
+        },
+    );
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Batched execution failed: ${errorText}`);
+    }
+
+    const results = (await response.json()) as ApiResponse[];
+    const tokens = results.map((r) => r.token).join(",");
+
+    const url = `https://${process.env.RAPIDAPI_HOST}/submissions/batch?base64_encoded=false&tokens=${tokens}`;
+
+    return await pollingGetSubmissions(url);
+};
+
+export async function pollingGetSubmissions(url: string) {
+    for (let i = 0; i < MAX_RETRIES; i++) {
+        await wait(RETRY_DELAY_MS);
+        const submissions = await getSubmissions(url);
+        if (submissions) return submissions;
+    }
+
+    throw new Error(`Polling submissions failed after ${MAX_RETRIES} retries`);
+}
+
+export async function getSubmissions(url: string) {
+    const res = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key": process.env.RAPIDAPI_KEY || "",
+            "X-RapidAPI-Host": process.env.RAPIDAPI_HOST || "",
+        },
+    });
+
+    if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Get submissions failed: ${errorText}`);
+    }
+
+    const data = (await res.json()) as BatchedApiResponse;
+    const allDone = data.submissions.every((s) => s.status.id >= 3);
+
+    return allDone ? data.submissions : null;
+}

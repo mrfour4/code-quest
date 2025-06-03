@@ -33,3 +33,6 @@ export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
     54: 54, // C++ (GCC 14.1.0)
     51: 51, // C# (Mono
 };
+
+export const MAX_RETRIES = 10;
+export const RETRY_DELAY_MS = 1000;
