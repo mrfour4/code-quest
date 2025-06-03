@@ -5,16 +5,14 @@ import { resultsAtom } from ".";
 import { runCode } from "../../actions/execute";
 import { generateStdinFromInputs } from "../../lib/execute";
 import { TestResult } from "../../types";
-import { codeAtom } from "../code";
 import { languagesAtom } from "../language";
 import { activeTabAtom } from "../tab";
 import { testCasesAtoms } from "../testcase";
 
 export const executingAtom = atom<boolean>(false);
 
-export const executeCodeAtom = atom(null, async (get, set) => {
+export const executeCodeAtom = atom(null, async (get, set, code: string) => {
     const language = get(languagesAtom);
-    const code = get(codeAtom);
     const testCases = get(testCasesAtoms);
 
     try {

@@ -57,14 +57,6 @@ export const FormPublishDocument = ({ documentId, onClose }: Props) => {
     }
 
     const onSubmit = (data: DocumentValues) => {
-        const newData = {
-            id: documentId,
-            title: data.title,
-            type: "published",
-            categoryId: data.categoryId as Id<"categories">,
-            tag: data.tag,
-        };
-        console.log("🚀 ~ onSubmit ~ newData:", newData);
         create.mutate(
             {
                 id: documentId,

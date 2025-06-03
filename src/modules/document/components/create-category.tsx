@@ -54,6 +54,7 @@ export const CreateCategoryButton = ({ onClose, onChange }: Props) => {
         <div className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
                 <Input
+                    autoFocus
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     onKeyDown={onKeyDown}

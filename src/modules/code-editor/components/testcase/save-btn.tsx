@@ -1,8 +1,8 @@
+import { useGetDocument } from "@/modules/dashboard/api/documents";
 import { useDocumentId } from "@/modules/document/hooks/use-document-id";
 import { useAtomValue } from "jotai";
 import { Save } from "lucide-react";
 import { toast } from "sonner";
-import { Id } from "../../../../../convex/_generated/dataModel";
 import { useSaveTestCases } from "../../api/testcase";
 import { testCasesAtoms } from "../../atom/testcase";
 import { ActionSelector } from "../action-selector";
@@ -12,10 +12,16 @@ export const SaveTestCasesButton = () => {
     const { mutate, isPending } = useSaveTestCases();
     const testCases = useAtomValue(testCasesAtoms);
 
+    const { data: document } = useGetDocument(documentId);
+
+    if (document?.type === "published") {
+        return null;
+    }
+
     const onClick = () => {
         mutate(
             {
-                documentId: documentId as Id<"documents">,
+                documentId,
                 value: testCases,
             },
             {
@@ -29,6 +35,7 @@ export const SaveTestCasesButton = () => {
             },
         );
     };
+
     return (
         <ActionSelector
             title="Save test cases"

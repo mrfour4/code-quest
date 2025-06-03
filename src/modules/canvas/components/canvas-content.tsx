@@ -8,7 +8,13 @@ import { Tldraw } from "tldraw";
 import { memo } from "react";
 import { useYjsStore } from "../hooks/use-yjs-store";
 
-export const CanvasContent = memo(function CanvasContent() {
+type Props = {
+    isPublished: boolean;
+};
+
+export const CanvasContent = memo(function CanvasContent({
+    isPublished,
+}: Props) {
     const id = useSelf((me) => me.id);
     const info = useSelf((me) => me.info);
 
@@ -17,6 +23,14 @@ export const CanvasContent = memo(function CanvasContent() {
     const store = useYjsStore({
         user: { id, color: info.color, name: info.name },
     });
+
+    if (isPublished) {
+        return (
+            <div className="h-full w-full flex-1 border">
+                <Tldraw autoFocus inferDarkMode />
+            </div>
+        );
+    }
 
     return (
         <div className="h-full w-full flex-1 border">

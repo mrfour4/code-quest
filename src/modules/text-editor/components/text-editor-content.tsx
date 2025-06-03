@@ -28,7 +28,11 @@ import { useUpdateDocumentState } from "../hooks/use-update-state";
 import { onPaste } from "../lib/content-paste";
 import { StyleSelector } from "./selectors/style-selector";
 
-export const TextEditorContent = () => {
+type Props = {
+    editable: boolean;
+};
+
+export const TextEditorContent = ({ editable }: Props) => {
     const liveblocks = useLiveblocksExtension();
     const extensions = [...defaultExtensions, slashCommand, liveblocks];
 
@@ -57,6 +61,7 @@ export const TextEditorContent = () => {
                     <EditorRoot>
                         <EditorContent
                             extensions={extensions}
+                            editable={editable}
                             className="w-full px-6 py-12"
                             editorProps={{
                                 handleDOMEvents: {

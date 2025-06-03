@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { useGetDocument } from "@/modules/dashboard/api/documents";
 import { useDocumentId } from "@/modules/document/hooks/use-document-id";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtomValue } from "jotai";
@@ -37,6 +38,7 @@ export const PublishButton = () => {
     const code = useAtomValue(codeAtom);
     const { mutate, isPending } = usePublishTemplate();
     const documentId = useDocumentId();
+    const { data: document } = useGetDocument(documentId);
 
     const form = useForm<TemplateValues>({
         resolver: zodResolver(templateSchema),
@@ -58,6 +60,7 @@ export const PublishButton = () => {
                 onSuccess() {
                     toast.success("Template created successfully!");
                     setOpen(false);
+                    form.reset();
                 },
                 onError(error) {
                     toast.error(`Failed to create template: ${error.message}`);
@@ -70,18 +73,13 @@ export const PublishButton = () => {
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <ActionSelector
-                        title="Make template"
-                        onClick={() => {}}
-                        disabled={false}
-                    >
-                        <FileCode />
-                    </ActionSelector>
+                    {document?.type === "draft" && (
+                        <ActionSelector title="Make template" disabled={false}>
+                            <FileCode />
+                        </ActionSelector>
+                    )}
                 </DialogTrigger>
-                <DialogContent
-                    // onPointerDownOutside={(e) => e.preventDefault()}
-                    className="flex h-[90vh] flex-col overflow-hidden sm:max-w-4xl"
-                >
+                <DialogContent className="flex h-[90vh] flex-col overflow-hidden sm:max-w-4xl">
                     <DialogHeader>
                         <DialogTitle>Create Code Template</DialogTitle>
                         <DialogDescription>

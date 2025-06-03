@@ -61,10 +61,7 @@ export const PublishButton = ({ documentId, type }: Props) => {
                     Publish
                 </Button>
             </DialogTrigger>
-            <DialogContent
-                onPointerDownOutside={(e) => e.preventDefault()}
-                onEscapeKeyDown={(e) => e.preventDefault()}
-            >
+            <DialogContent onEscapeKeyDown={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle>Publish Document</DialogTitle>
                     <DialogDescription>

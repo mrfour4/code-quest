@@ -17,10 +17,14 @@ export const CanvasSkeleton = () => {
     );
 };
 
-export const Canvas = () => {
+type Props = {
+    isPublished: boolean;
+};
+
+export const Canvas = ({ isPublished }: Props) => {
     return (
         <ClientSideSuspense fallback={<CanvasSkeleton />}>
-            <CanvasContent />
+            <CanvasContent isPublished={isPublished} />
         </ClientSideSuspense>
     );
 };

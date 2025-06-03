@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 type Props = {
     children?: React.ReactNode;
     title: string;
-    onClick: () => void;
+    onClick?: () => void;
     disabled?: boolean;
 };
 

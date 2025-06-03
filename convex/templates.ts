@@ -21,10 +21,14 @@ export const get = query({
             .unique();
 
         if (template) {
+            const isPublished = document.type === "published";
+
             return {
-                documentId: document._id,
-                language: template.language,
-                code: `${template.head}\n${template.body}\n${template.tail}`,
+                ...template,
+                isPublished,
+                code: isPublished
+                    ? template.body
+                    : `${template.head}\n${template.body}\n${template.tail}`,
             };
         }
     },

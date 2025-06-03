@@ -5,13 +5,18 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Canvas } from "@/modules/canvas/components/canvas";
 import { CodeEditor } from "@/modules/code-editor/components/code-editor";
 import { CodeXml, Palette } from "lucide-react";
 import { useState } from "react";
 import { TabValue } from "../types";
 import { TestCaseArea } from "./testcase-area";
 
-export const CodeArea = () => {
+type Props = {
+    isPublished: boolean;
+};
+
+export const CodeArea = ({ isPublished }: Props) => {
     const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);
 
     return (
@@ -50,8 +55,7 @@ export const CodeArea = () => {
                 </ResizablePanelGroup>
             </TabsContent>
             <TabsContent value={TabValue.Canvas}>
-                Canvas
-                {/* <Canvas /> */}
+                <Canvas isPublished={isPublished} />
             </TabsContent>
         </Tabs>
     );

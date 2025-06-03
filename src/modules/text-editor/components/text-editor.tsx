@@ -21,10 +21,14 @@ export const TextEditorSkeleton = () => {
     );
 };
 
-export const TextEditor = () => {
+type Props = {
+    editable: boolean;
+};
+
+export const TextEditor = ({ editable }: Props) => {
     return (
         <ClientSideSuspense fallback={<TextEditorSkeleton />}>
-            <TextEditorContent />
+            <TextEditorContent editable={editable} />
         </ClientSideSuspense>
     );
 };

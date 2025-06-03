@@ -1,4 +1,5 @@
 import { useFilters } from "@/hooks/use-filters";
+import { useDocumentId } from "@/modules/document/hooks/use-document-id";
 import { useAuth } from "@clerk/nextjs";
 import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -30,6 +31,11 @@ export const useGetDocument = (id: string) => {
     return useQuery(
         convexQuery(api.documents.get, { id: id as Id<"documents"> }),
     );
+};
+
+export const useGetCurrentDocument = () => {
+    const documentId = useDocumentId();
+    return useGetDocument(documentId);
 };
 
 export const useListDocuments = () => {
