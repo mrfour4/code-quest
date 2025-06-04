@@ -1,3 +1,6 @@
+import { CoreMessage } from "ai";
+import { SYSTEM_PROMPTS } from "../constants/system-prompts";
+
 export function isValidUrl(url: string) {
     try {
         new URL(url);
@@ -16,4 +19,34 @@ export function getUrlFromString(str: string) {
     } catch (_e) {
         return null;
     }
+}
+
+export function buildMessages(
+    option: string,
+    prompt: string,
+    command?: string,
+): CoreMessage[] {
+    if (option === "zap") {
+        return [
+            {
+                role: "system",
+                content: SYSTEM_PROMPTS.zap.join(" "),
+            },
+            {
+                role: "user",
+                content: `For this text:\n${prompt}\nApply the following command:\n${command}`,
+            },
+        ];
+    }
+
+    return [
+        {
+            role: "system",
+            content: SYSTEM_PROMPTS[option]?.join(" ") ?? "",
+        },
+        {
+            role: "user",
+            content: prompt,
+        },
+    ];
 }

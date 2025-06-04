@@ -1,6 +1,7 @@
 import {
     ArrowDownWideNarrow,
     CheckCheck,
+    Code2,
     LucideIcon,
     RefreshCcwDot,
     WrapText,
@@ -33,5 +34,10 @@ export const AI_SELECTOR_OPTIONS: AISelectorOption[] = [
         value: "longer",
         label: "Make longer",
         icon: WrapText,
+    },
+    {
+        value: "solution",
+        label: "Make solution (JS)",
+        icon: Code2,
     },
 ];
