@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import { Logo } from "@/modules/dashboard/components/logo";
 import { UserButton } from "@clerk/nextjs";
 
@@ -11,7 +10,6 @@ export const Header = () => {
                     <UserButton
                         appearance={{ elements: { avatarBox: "!size-8" } }}
                     />
-                    <ModeToggle />
                 </div>
             </div>
         </header>

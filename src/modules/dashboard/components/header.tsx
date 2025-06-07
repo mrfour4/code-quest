@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { Package2 } from "lucide-react";
@@ -18,7 +17,6 @@ export const Header = () => {
                     <Button variant="secondary" size="icon">
                         <Package2 />
                     </Button>
-                    <ModeToggle />
                 </div>
             </div>
         </header>

@@ -2,7 +2,7 @@
 
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import { useAuth, useOrganization } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -10,8 +10,7 @@ import { useCreateDocument } from "../api/documents";
 
 export const NewDocButton = () => {
     const { isPending, mutate } = useCreateDocument();
-    const { organization } = useOrganization();
-    const { orgId, userId } = useAuth();
+    const { userId } = useAuth();
     const router = useRouter();
 
     const onClick = () => {
@@ -39,7 +38,7 @@ export const NewDocButton = () => {
                 disabled={isPending}
                 variant="secondary"
                 size="icon"
-                className="bg-input/50 hover:bg-input/70"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground dark:text-primary dark:bg-input/50 dark:hover:bg-input/70"
             >
                 <Plus />
             </Button>

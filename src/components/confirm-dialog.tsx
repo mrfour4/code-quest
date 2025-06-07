@@ -30,7 +30,7 @@ export const ConfirmDialog = ({
 }: Props) => {
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
-            <AlertDialogContent className="dark:bg-[#121215]">
+            <AlertDialogContent className="dark:bg-background">
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
                     <AlertDialogDescription>{message}</AlertDialogDescription>

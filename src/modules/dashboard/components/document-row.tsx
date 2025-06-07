@@ -41,12 +41,12 @@ export const DocumentRow = ({ doc }: Props) => {
     return (
         <>
             <Link
-                className="flex h-20 w-full items-center border p-4"
+                className="flex h-20 w-full items-center p-4"
                 href={`/document/${doc._id}`}
             >
                 <div className="flex w-full items-center gap-x-3">
                     <div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
-                        <Icon className="size-5 text-white" />
+                        <Icon className="text-primary size-5" />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
                         <div className="flex items-center gap-x-1.5">

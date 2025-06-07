@@ -25,7 +25,7 @@ export const DocumentSearch = () => {
                     setValue(e.target.value);
                     onSearchChange(e.target.value);
                 }}
-                className="pr-8"
+                className="bg-primary-foreground pr-8"
                 onFocus={(e) => e.target.select()}
             />
             <Search className="text-muted-foreground absolute top-1/2 right-2 size-4 -translate-y-1/2" />
