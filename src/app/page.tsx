@@ -64,7 +64,14 @@ export const metadata: Metadata = {
         title: "CodeQuest - Interactive Coding Challenge Platform",
         description:
             "Master programming with AI-powered challenges and real-time collaboration.",
-        images: ["/twitter-image.jpg"],
+        images: [
+            {
+                url: "/og-image.jpg",
+                width: 1200,
+                height: 630,
+                alt: "CodeQuest - Interactive Coding Challenge Platform",
+            },
+        ],
         creator: "@codequest",
     },
     robots: {
