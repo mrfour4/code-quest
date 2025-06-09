@@ -6,6 +6,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { useHydrateTemplate } from "@/modules/code-editor/hooks/use-hydrate-template";
 import { useHydrateTestCases } from "@/modules/code-editor/hooks/use-hydrate-testcases";
 import { CodeArea } from "@/modules/document/components/code-area";
@@ -22,6 +23,16 @@ export const ProblemContent = ({ preLoadedProblem }: Props) => {
 
     useHydrateTestCases();
     useHydrateTemplate();
+
+    const isMobile = useMediaQuery("(max-width: 767px)");
+
+    if (isMobile) {
+        return (
+            <div className="flex overflow-hidden">
+                <TextEditor editable={document.type === "draft"} />
+            </div>
+        );
+    }
 
     return (
         <ClientOnly>

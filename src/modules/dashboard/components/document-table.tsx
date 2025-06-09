@@ -16,14 +16,13 @@ export const DocumentTable = () => {
 
     return (
         <div className="flex h-[80vh] w-full flex-col overflow-hidden">
-            <div className="flex h-full flex-col gap-y-6 overflow-hidden">
+            <div className="flex h-full flex-col gap-y-3 overflow-hidden lg:gap-y-6">
                 <div className="flex w-full items-center justify-between py-1">
-                    <h1 className="text-xl font-semibold capitalize">
+                    <h1 className="line-clamp-1 truncate text-xl font-semibold capitalize">
                         {filters.type ? filters.type : "all"}
                     </h1>
 
-                    <div className="flex items-center gap-x-3">
-                        <DocumentSearch />
+                    <div className="flex items-center gap-x-2">
                         <DocumentTypes />
                         <NewDocButton />
                         <Hint message="View all problems">
@@ -39,6 +38,8 @@ export const DocumentTable = () => {
                         </Hint>
                     </div>
                 </div>
+
+                <DocumentSearch />
 
                 <ScrollArea className="flex h-full flex-col overflow-auto rounded-md">
                     <DocumentTableContent />

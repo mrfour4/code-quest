@@ -17,7 +17,7 @@ export const DocumentSearch = () => {
     }, 500);
 
     return (
-        <div className="relative ml-2 w-full lg:w-80">
+        <div className="relative w-full lg:w-80">
             <Input
                 placeholder="Search title..."
                 value={value}

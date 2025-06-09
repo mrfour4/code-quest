@@ -48,7 +48,7 @@ export const PublishButton = ({ documentId, type }: Props) => {
         return (
             <Button onClick={onClick} disabled={isPending}>
                 <PencilLine />
-                Edit
+                <span className="hidden sm:block">Edit</span>
             </Button>
         );
     }
@@ -58,7 +58,7 @@ export const PublishButton = ({ documentId, type }: Props) => {
             <DialogTrigger asChild>
                 <Button>
                     <FileText />
-                    Publish
+                    <span className="hidden sm:block">Publish</span>
                 </Button>
             </DialogTrigger>
             <DialogContent onEscapeKeyDown={(e) => e.preventDefault()}>

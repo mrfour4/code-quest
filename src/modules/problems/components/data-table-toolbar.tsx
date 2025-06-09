@@ -23,47 +23,59 @@ export function DataTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0;
 
     return (
-        <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center gap-2">
-                <Input
-                    placeholder="Filter title..."
-                    value={
-                        (table
-                            .getColumn("title")
-                            ?.getFilterValue() as string) ?? ""
-                    }
-                    onChange={(event) =>
-                        table
-                            .getColumn("title")
-                            ?.setFilterValue(event.target.value)
-                    }
-                    className="h-8 w-full"
-                />
-                {table.getColumn("category") && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn("category")}
-                        title="Category"
-                        options={categoryOpts}
+        <div className="flex flex-col gap-y-2">
+            <div className="flex items-center justify-between">
+                <div className="flex flex-1 items-center gap-2">
+                    <Input
+                        placeholder="Filter title..."
+                        value={
+                            (table
+                                .getColumn("title")
+                                ?.getFilterValue() as string) ?? ""
+                        }
+                        onChange={(event) =>
+                            table
+                                .getColumn("title")
+                                ?.setFilterValue(event.target.value)
+                        }
+                        className="hidden h-8 w-full md:inline-flex"
                     />
-                )}
-                {table.getColumn("tag") && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn("tag")}
-                        title="Tag"
-                        options={tagOpts}
-                    />
-                )}
-                {isFiltered && (
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => table.resetColumnFilters()}
-                    >
-                        Reset
-                        <X />
-                    </Button>
-                )}
+                    {table.getColumn("category") && (
+                        <DataTableFacetedFilter
+                            column={table.getColumn("category")}
+                            title="Category"
+                            options={categoryOpts}
+                        />
+                    )}
+                    {table.getColumn("tag") && (
+                        <DataTableFacetedFilter
+                            column={table.getColumn("tag")}
+                            title="Tag"
+                            options={tagOpts}
+                        />
+                    )}
+                    {isFiltered && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => table.resetColumnFilters()}
+                        >
+                            Reset
+                            <X />
+                        </Button>
+                    )}
+                </div>
             </div>
+            <Input
+                placeholder="Filter title..."
+                value={
+                    (table.getColumn("title")?.getFilterValue() as string) ?? ""
+                }
+                onChange={(event) =>
+                    table.getColumn("title")?.setFilterValue(event.target.value)
+                }
+                className="h-8 w-full md:hidden"
+            />
         </div>
     );
 }

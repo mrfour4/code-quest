@@ -41,7 +41,7 @@ export const DocumentRow = ({ doc }: Props) => {
     return (
         <>
             <Link
-                className="flex h-20 w-full items-center p-4"
+                className="flex h-20 w-full items-center p-4 px-0 lg:px-4"
                 href={`/document/${doc._id}`}
             >
                 <div className="flex w-full items-center gap-x-3">

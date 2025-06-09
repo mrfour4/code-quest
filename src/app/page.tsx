@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/card";
 import { DemoDialog } from "@/modules/dashboard/components/demo-dialog";
 import { Logo } from "@/modules/dashboard/components/logo";
+import { Navbar } from "@/modules/dashboard/components/navbar";
 import { SignInBtn } from "@/modules/dashboard/components/sign-in-btn";
-import { NAVIGATION_ITEMS } from "@/modules/dashboard/constants";
 import {
     ArrowRight,
     BookOpen,
@@ -125,21 +125,11 @@ export default function HomePage() {
 
             <div className="flex min-h-screen flex-col">
                 <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
-                    <div className="px:4 mx-auto flex h-14 max-w-6xl items-center md:px-8">
-                        <div className="mr-4 flex">
+                    <div className="mx-auto flex h-14 max-w-6xl items-center px-4 md:px-8">
+                        <div className="mr-4 hidden md:flex">
                             <Logo />
                         </div>
-                        <nav className="flex items-center space-x-6 text-sm font-medium">
-                            {NAVIGATION_ITEMS.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className="hover:text-foreground/80 transition-colors hover:underline"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </nav>
+                        <Navbar />
                         <div className="flex flex-1 items-center justify-end space-x-2">
                             <SignInBtn />
                         </div>

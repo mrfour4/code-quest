@@ -62,7 +62,7 @@ export const TextEditorContent = ({ editable }: Props) => {
                         <EditorContent
                             extensions={extensions}
                             editable={editable}
-                            className="w-full px-6 py-12"
+                            className="w-full px-4 py-6 text-justify lg:px-6 lg:py-12"
                             editorProps={{
                                 handleDOMEvents: {
                                     keydown: (_view, event) =>

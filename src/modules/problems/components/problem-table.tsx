@@ -21,7 +21,7 @@ export const ProblemTable = () => {
     const tagOpts = getTagOpts();
 
     return (
-        <div className="mx-auto mt-10 max-w-3xl px-1 py-10">
+        <div className="mx-auto mt-10 max-w-3xl px-4 py-10">
             <DataTable
                 columns={columns}
                 data={problems.data ?? []}

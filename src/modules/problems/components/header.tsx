@@ -1,3 +1,4 @@
+import { ClientOnly } from "@/components/client-only";
 import { Logo } from "@/modules/dashboard/components/logo";
 import { UserButton } from "@clerk/nextjs";
 
@@ -7,9 +8,11 @@ export const Header = () => {
             <div className="flex h-full w-full items-center justify-between px-4">
                 <Logo />
                 <div className="flex items-center gap-3">
-                    <UserButton
-                        appearance={{ elements: { avatarBox: "!size-8" } }}
-                    />
+                    <ClientOnly>
+                        <UserButton
+                            appearance={{ elements: { avatarBox: "!size-8" } }}
+                        />
+                    </ClientOnly>
                 </div>
             </div>
         </header>

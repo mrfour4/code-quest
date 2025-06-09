@@ -1,7 +1,12 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export const Logo = () => {
+type Props = {
+    className?: HTMLSpanElement["className"];
+};
+
+export const Logo = ({ className }: Props) => {
     return (
         <Link
             href="/"
@@ -14,9 +19,16 @@ export const Logo = () => {
                 height={24}
                 className="size-6 object-cover"
             />
-            <span className="text-lg font-bold whitespace-nowrap">
-                Code Quest
-            </span>
+            {
+                <span
+                    className={cn(
+                        "text-lg font-bold whitespace-nowrap",
+                        className,
+                    )}
+                >
+                    Code Quest
+                </span>
+            }
         </Link>
     );
 };

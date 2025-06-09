@@ -1,3 +1,5 @@
+"use client";
+
 import { useMounted } from "@/hooks/use-mounted";
 
 type Props = {

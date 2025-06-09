@@ -30,7 +30,7 @@ export const Header = ({ preloadedDocument }: Props) => {
     return (
         <header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
             <div className="flex size-full items-center justify-between px-4 py-3">
-                <Logo />
+                <Logo className="hidden lg:block" />
 
                 <div className="w-1/3 px-4">
                     <DocumentTitle
@@ -41,14 +41,19 @@ export const Header = ({ preloadedDocument }: Props) => {
                 </div>
 
                 <div className="flex items-center gap-x-3">
-                    <AvatarStack />
+                    <div className="hidden md:block">
+                        <AvatarStack />
+                    </div>
+
                     {document.role === Role.Admin && (
                         <PublishButton
                             documentId={document._id}
                             type={document.type}
                         />
                     )}
-                    <Inbox />
+                    <div className="hidden md:block">
+                        <Inbox />
+                    </div>
                 </div>
             </div>
         </header>
