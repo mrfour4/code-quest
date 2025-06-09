@@ -27,7 +27,7 @@ export const DocumentContent = ({ preLoadedDocument }: Props) => {
 
     if (isMobile) {
         return (
-            <div className="flex overflow-hidden">
+            <div className="flex w-screen overflow-hidden">
                 <TextEditor editable={document.type === "draft"} />
             </div>
         );

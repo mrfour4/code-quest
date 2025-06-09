@@ -33,7 +33,7 @@ export const DemoDialog = ({
                     {children}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="p-0 sm:max-w-xl md:max-w-2xl lg:max-w-4xl">
+            <DialogContent className="p-0 lg:max-w-3xl">
                 <VisuallyHidden>
                     <DialogHeader>
                         <DialogTitle>Code Quest Tutorial Video</DialogTitle>
@@ -44,15 +44,13 @@ export const DemoDialog = ({
                         </DialogDescription>
                     </DialogHeader>
                 </VisuallyHidden>
-                <div className="aspect-video">
+                <div className="flex aspect-video items-center justify-center">
                     <iframe
-                        width="100%"
-                        height="100%"
                         src="https://www.youtube.com/embed/5bId3N7QZec?autoplay=1&rel=0"
                         title="CodeQuest Demo - How Programmers Overprepare for Job Interviews"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
-                        className="rounded-lg border-0"
+                        className="h-full w-full rounded-lg border-0"
                     ></iframe>
                 </div>
             </DialogContent>

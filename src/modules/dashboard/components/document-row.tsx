@@ -53,7 +53,7 @@ export const DocumentRow = ({ doc }: Props) => {
                             <p className="text-sm font-medium">{doc.title}</p>
                             <Badge
                                 variant="secondary"
-                                className="text-xs capitalize"
+                                className="hidden text-xs capitalize md:block"
                             >
                                 {doc.orgName}
                             </Badge>

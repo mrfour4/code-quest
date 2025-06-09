@@ -28,7 +28,7 @@ export const ProblemContent = ({ preLoadedProblem }: Props) => {
 
     if (isMobile) {
         return (
-            <div className="flex overflow-hidden">
+            <div className="flex w-screen overflow-hidden">
                 <TextEditor editable={document.type === "draft"} />
             </div>
         );
