@@ -1,3 +1,7 @@
+import { Suspense } from "react";
+
 export default async function OrganizationPage() {
-    return <div>Organization Page</div>;
+    return (
+        <Suspense fallback={<div>Loading...</div>}>Organization Page</Suspense>
+    );
 }
