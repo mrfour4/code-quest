@@ -1,34 +1,61 @@
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 import Link from "next/link";
+import { NAVIGATION_ITEMS } from "../constants";
+import { Logo } from "./logo";
 
-type Props = {
-    className?: HTMLSpanElement["className"];
+export const Navbar = () => {
+    return (
+        <>
+            <Sheet>
+                <SheetTrigger asChild>
+                    <Button size="icon" variant="ghost" className="md:hidden">
+                        <Menu />
+                    </Button>
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>
+                            <Logo />
+                        </SheetTitle>
+                        <SheetDescription>
+                            Welcome to Code Quest! Explore our features and
+                            start your coding journey.
+                        </SheetDescription>
+                    </SheetHeader>
+                    <div className="px-4">
+                        <NavbarContent />
+                    </div>
+                </SheetContent>
+            </Sheet>
+
+            <div className="hidden md:block">
+                <NavbarContent />
+            </div>
+        </>
+    );
 };
 
-export const Logo = ({ className }: Props) => {
+export const NavbarContent = () => {
     return (
-        <Link
-            href="/"
-            className="mr-4 flex items-center gap-2 hover:opacity-80"
-        >
-            <Image
-                src="/logo.svg"
-                alt="Code Quest Logo"
-                width={24}
-                height={24}
-                className="size-6 object-cover"
-            />
-            {
-                <span
-                    className={cn(
-                        "text-lg font-bold whitespace-nowrap",
-                        className,
-                    )}
+        <nav className="flex flex-col items-start space-x-6 text-sm font-medium md:flex-row">
+            {NAVIGATION_ITEMS.map((item) => (
+                <Link
+                    key={item.href}
+                    href={item.href}
+                    className="hover:text-foreground/80 py-2 transition-colors hover:underline"
                 >
-                    Code Quest
-                </span>
-            }
-        </Link>
+                    {item.label}
+                </Link>
+            ))}
+        </nav>
     );
 };
