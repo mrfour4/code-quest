@@ -12,4 +12,24 @@ export const DOCUMENT_ICON_MAP: DocumentIconMap = {
     published: FileCheck,
 };
 
-export const ITEM_PER_PAGE = 3;
+export const ITEM_PER_PAGE = 5;
+
+type NavigationItem = {
+    label: string;
+    href: string;
+};
+
+export const NAVIGATION_ITEMS: NavigationItem[] = [
+    {
+        label: "Problems",
+        href: "/problems",
+    },
+    {
+        label: "Dashboard",
+        href: "/dashboard",
+    },
+    {
+        label: "Features",
+        href: "/#features",
+    },
+];
