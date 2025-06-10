@@ -3,7 +3,7 @@ import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
 import { match } from "ts-pattern";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function POST(req: Request) {
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
