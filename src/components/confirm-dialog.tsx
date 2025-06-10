@@ -39,12 +39,7 @@ export const ConfirmDialog = ({
                     <AlertDialogCancel disabled={disabled} onClick={onCancel}>
                         Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction
-                        disabled={disabled}
-                        onClick={() => {
-                            onConfirm();
-                        }}
-                    >
+                    <AlertDialogAction disabled={disabled} onClick={onConfirm}>
                         Continue
                     </AlertDialogAction>
                 </AlertDialogFooter>

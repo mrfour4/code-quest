@@ -60,14 +60,12 @@ export const Results = () => {
                                 <>
                                     <OutputResultSection
                                         label="Output"
-                                        status={currentResult.status}
                                         value={currentResult.output}
                                         diff={diff.outputHighlighted}
                                     />
 
                                     <OutputResultSection
                                         label="Expected"
-                                        status={currentResult.status}
                                         value={currentResult.expected}
                                         diff={diff.expectedHighlighted}
                                     />

@@ -2,8 +2,9 @@ import { filter } from "convex-helpers/server/filter";
 import { getAllOrThrow } from "convex-helpers/server/relationships";
 import { paginationOptsValidator, UserIdentity } from "convex/server";
 import { ConvexError, v } from "convex/values";
+import { internal } from "./_generated/api";
 import { Doc, Id } from "./_generated/dataModel";
-import { mutation, query, QueryCtx } from "./_generated/server";
+import { internalAction, mutation, query, QueryCtx } from "./_generated/server";
 
 export enum Role {
     Admin = "org:admin",
@@ -50,6 +51,7 @@ export const update = mutation({
         tag: v.optional(
             v.union(v.literal("easy"), v.literal("medium"), v.literal("hard")),
         ),
+        content: v.optional(v.string()),
     },
     handler: async (ctx, { id, ...rest }) => {
         const document = await getAccessibleDocument(ctx, id);
@@ -78,7 +80,27 @@ export const remove = mutation({
             );
         }
 
-        return await ctx.db.delete(document._id);
+        ctx.db.delete(id);
+        ctx.scheduler.runAfter(0, internal.documents.deleteRoom, { id });
+    },
+});
+
+export const deleteRoom = internalAction({
+    args: { id: v.id("documents") },
+    handler: async (_, { id }) => {
+        const result = await fetch(
+            `https://api.liveblocks.io/v2/rooms/${id.toString()}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY!}`,
+                },
+            },
+        );
+
+        if (!result.ok) {
+            throw new ConvexError("Failed to delete Liveblocks room");
+        }
     },
 });
 
@@ -166,8 +188,7 @@ export const list = query({
 
                     return role ? { ...doc, role } : null;
                 })
-                .filter((doc) => !!doc)
-                .sort((a, b) => b.updatedAt - a.updatedAt),
+                .filter((doc) => !!doc),
         };
     },
 });

@@ -8,7 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { useUpdateDocument } from "@/modules/dashboard/api/documents";
-import { FileText, PencilLine } from "lucide-react";
+import { CloudUpload, PencilLine } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -56,8 +56,8 @@ export const PublishButton = ({ documentId, type }: Props) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
-                    <FileText />
+                <Button variant="outline" disabled={isPending}>
+                    <CloudUpload />
                     <span className="hidden sm:block">Publish</span>
                 </Button>
             </DialogTrigger>

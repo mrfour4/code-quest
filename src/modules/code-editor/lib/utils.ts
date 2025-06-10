@@ -1,3 +1,4 @@
+import isEqual from "fast-deep-equal";
 import { StatusResult, TestResult } from "../types";
 
 export function getErrorMessage(results: TestResult[]) {
@@ -44,34 +45,6 @@ export function getOverallStatus(results: TestResult[]) {
     return hasWrongAnswer ? StatusResult.WrongAnswer : StatusResult.Accepted;
 }
 
-export function highlightDiff(output: string, expected: string) {
-    if (output === expected) return { output, expected };
-
-    try {
-        const outputParsed = JSON.parse(output);
-        const expectedParsed = JSON.parse(expected);
-
-        if (Array.isArray(outputParsed) && Array.isArray(expectedParsed)) {
-            const outputHighlighted = outputParsed.map((item, index) => {
-                const isDiff = expectedParsed[index] !== item;
-                return { value: item, color: isDiff ? "text-red-500" : "" };
-            });
-
-            const expectedHighlighted = expectedParsed.map((item, index) => {
-                const isDiff = outputParsed[index] !== item;
-                return { value: item, color: isDiff ? "text-green-500" : "" };
-            });
-
-            return { outputHighlighted, expectedHighlighted };
-        }
-    } catch {
-        console.log("Error parsing JSON for diff highlighting");
-        // toast.error("Value invalid");
-    }
-
-    return { output, expected };
-}
-
 export function formatTime(value: number) {
     const numberFormatter = new Intl.NumberFormat("en-US", {
         maximumFractionDigits: 1,
@@ -86,4 +59,69 @@ export function formatTime(value: number) {
 
 export function wait(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function highlightRecursive(
+    outputData: any,
+    expectedData: any,
+    isOutput: boolean,
+): any {
+    if (Array.isArray(outputData) && Array.isArray(expectedData)) {
+        return outputData.map((item, i) =>
+            highlightRecursive(item, expectedData[i], isOutput),
+        );
+    }
+
+    if (
+        outputData &&
+        expectedData &&
+        typeof outputData === "object" &&
+        typeof expectedData === "object"
+    ) {
+        const result: Record<string, any> = {};
+        const allKeys = new Set([
+            ...Object.keys(outputData),
+            ...Object.keys(expectedData),
+        ]);
+
+        for (const key of allKeys) {
+            result[key] = highlightRecursive(
+                outputData[key],
+                expectedData[key],
+                isOutput,
+            );
+        }
+        return result;
+    }
+
+    const isDiff = !isEqual(outputData, expectedData);
+    return {
+        value: isOutput ? outputData : expectedData,
+        color: isDiff ? (isOutput ? "text-red-500" : "text-green-500") : "",
+    };
+}
+
+export function highlightDiff(output: string, expected: string) {
+    if (output === expected) return { output, expected };
+
+    try {
+        const outputParsed = JSON.parse(output);
+        const expectedParsed = JSON.parse(expected);
+
+        const outputHighlighted = highlightRecursive(
+            outputParsed,
+            expectedParsed,
+            true,
+        );
+        const expectedHighlighted = highlightRecursive(
+            expectedParsed,
+            outputParsed,
+            false,
+        );
+
+        return { outputHighlighted, expectedHighlighted };
+    } catch (err) {
+        console.error("Invalid JSON input");
+        return { output, expected };
+    }
 }
