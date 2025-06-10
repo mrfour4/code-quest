@@ -4,14 +4,14 @@ import { Command, CommandInput } from "@/components/ui/command";
 
 import CrazySpinner from "@/components/icons/crazy-spinner";
 import Magic from "@/components/icons/magic";
+import { MemoizedMarkdown } from "@/components/memoized-markdown";
 import { Button } from "@/components/ui/button";
 import ResizableScrollArea from "@/modules/text-editor/components/resizable-scroll-area";
 import { useCompletion } from "@ai-sdk/react";
 import { ArrowUp } from "lucide-react";
 import { addAIHighlight, useEditor } from "novel";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
-import { MarkdownWrapper } from "../markdown-wrapper";
 import { AICompletionCommands } from "./ai-completion-command";
 import { AISelectorCommands } from "./ai-selector-commands";
 
@@ -21,7 +21,6 @@ type Props = {
 
 export function AISelector({ onOpenChange }: Props) {
     const { editor } = useEditor();
-    const [inputValue, setInputValue] = useState("");
 
     useEffect(() => {
         if (!editor) {
@@ -35,19 +34,23 @@ export function AISelector({ onOpenChange }: Props) {
         };
     }, [editor]);
 
-    const { completion, complete, isLoading } = useCompletion({
-        // id: "novel",
-        api: "/api/generate",
-        onResponse: (response) => {
-            if (response.status === 429) {
-                toast.error("You have reached your request limit for the day.");
-                return;
-            }
-        },
-        onError: (e) => {
-            toast.error(e.message);
-        },
-    });
+    const { completion, complete, setCompletion, isLoading, input, setInput } =
+        useCompletion({
+            id: "novel",
+            api: "/api/generate",
+            experimental_throttle: 50,
+            onResponse: (response) => {
+                if (response.status === 429) {
+                    toast.error(
+                        "You have reached your request limit for the day.",
+                    );
+                    return;
+                }
+            },
+            onError: (e) => {
+                toast.error(e.message);
+            },
+        });
 
     const hasCompletion = completion.length > 0;
 
@@ -56,13 +59,17 @@ export function AISelector({ onOpenChange }: Props) {
             return;
         }
 
-        if (completion)
+        if (completion) {
+            if (input.trim().length === 0) {
+                return;
+            }
             return complete(completion, {
                 body: {
                     option: "zap",
-                    command: inputValue,
+                    command: input,
                 },
-            }).then(() => setInputValue(""));
+            }).then(() => setInput(""));
+        }
 
         const slice = editor.state.selection.content();
         const text = editor.storage.markdown.serializer.serialize(
@@ -72,9 +79,9 @@ export function AISelector({ onOpenChange }: Props) {
         complete(text, {
             body: {
                 option: "zap",
-                command: inputValue,
+                command: input,
             },
-        }).then(() => setInputValue(""));
+        }).then(() => setInput(""));
     };
 
     return (
@@ -83,7 +90,14 @@ export function AISelector({ onOpenChange }: Props) {
                 <ResizableScrollArea height={300} minWidth={350} maxWidth={600}>
                     <div className="w-full overflow-hidden p-2 px-4">
                         <div className="prose dark:prose-invert prose-sm overflow-wrap-anywhere w-full max-w-none break-words">
-                            <MarkdownWrapper>{completion}</MarkdownWrapper>
+                            <div className="w-full overflow-hidden p-2 px-4">
+                                <div className="prose dark:prose-invert prose-sm markdown-wrap w-full max-w-none [&_code]:text-sm [&_pre]:bg-transparent [&_pre]:p-0 [&_pre>div]:!p-4">
+                                    <MemoizedMarkdown
+                                        id="novel"
+                                        content={completion}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </ResizableScrollArea>
@@ -108,8 +122,8 @@ export function AISelector({ onOpenChange }: Props) {
                         }}
                     >
                         <CommandInput
-                            value={inputValue}
-                            onValueChange={setInputValue}
+                            value={input}
+                            onValueChange={setInput}
                             autoFocus
                             placeholder={
                                 hasCompletion
@@ -150,6 +164,8 @@ export function AISelector({ onOpenChange }: Props) {
                                 editor.view.dom.classList.remove(
                                     "novel-ai-active",
                                 );
+
+                                setCompletion("");
                             }}
                             completion={completion}
                         />

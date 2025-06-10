@@ -1,5 +1,6 @@
 import { User } from "@clerk/nextjs/server";
 import { clsx, type ClassValue } from "clsx";
+import { marked } from "marked";
 import stc from "string-to-color";
 import { twMerge } from "tailwind-merge";
 
@@ -19,4 +20,9 @@ export function getUserInfo(user: User) {
         avatar,
         color,
     };
+}
+
+export function parseMarkdownIntoBlocks(markdown: string) {
+    const tokens = marked.lexer(markdown);
+    return tokens.map((token) => token.raw);
 }

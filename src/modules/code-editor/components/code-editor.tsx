@@ -106,6 +106,7 @@ export const CodeEditor = () => {
                         stickyScroll: {
                             enabled: false,
                         },
+                        wordWrap: "on",
                     }}
                 />
             </div>
