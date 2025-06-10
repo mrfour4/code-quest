@@ -58,8 +58,10 @@ export const useListDocuments = () => {
         }
     }, [isLoading, results.length, status, loadMore]);
 
+    const sortedResults = results.sort((a, b) => b.updatedAt - a.updatedAt);
+
     return {
-        results,
+        results: sortedResults,
         isLoading,
         loadMore,
         status,
