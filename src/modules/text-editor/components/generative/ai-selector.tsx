@@ -36,8 +36,6 @@ export function AISelector({ onOpenChange }: Props) {
 
     const { completion, complete, setCompletion, isLoading, input, setInput } =
         useCompletion({
-            id: "novel",
-            api: "/api/generate",
             experimental_throttle: 50,
             onResponse: (response) => {
                 if (response.status === 429) {
