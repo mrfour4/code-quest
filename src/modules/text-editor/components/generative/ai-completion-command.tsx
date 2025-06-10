@@ -36,6 +36,8 @@ export const AICompletionCommands = ({ completion, onDiscard }: Props) => {
                                 completion,
                             )
                             .run();
+
+                        onDiscard();
                     }}
                 >
                     <Check className="text-muted-foreground h-4 w-4" />
@@ -55,6 +57,8 @@ export const AICompletionCommands = ({ completion, onDiscard }: Props) => {
                             .focus()
                             .insertContentAt(selection.to, completion)
                             .run();
+
+                        onDiscard();
                     }}
                 >
                     <TextQuote className="text-muted-foreground h-4 w-4" />
