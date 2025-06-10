@@ -87,6 +87,7 @@ export default function RootLayout({
                     defaultTheme="dark"
                     enableSystem
                     disableTransitionOnChange
+                    forcedTheme="dark"
                 >
                     <ConvexClientProvider>
                         <NuqsAdapter>
