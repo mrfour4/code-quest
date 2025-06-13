@@ -32,7 +32,7 @@ export const PublishButton = ({ documentId, type }: Props) => {
             },
             {
                 onError(error) {
-                    console.error("Error updating document:", error);
+                    console.log("Error updating document:", error);
                     toast.error("Failed to update document.");
                 },
                 onSuccess() {

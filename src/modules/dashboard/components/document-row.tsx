@@ -31,7 +31,7 @@ export const DocumentRow = ({ doc }: Props) => {
                     setOpen(false);
                 },
                 onError: (error) => {
-                    console.error("Error deleting document:", error);
+                    console.log("Error deleting document:", error);
                     toast.error("Error deleting document");
                 },
             },

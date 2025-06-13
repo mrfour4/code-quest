@@ -10,7 +10,7 @@ export const useUpdateDocumentState = () => {
 
     const onUpdateState = () => {
         if (!documentId) {
-            console.error("Document ID is not available");
+            console.log("Document ID is not available");
             return;
         }
 

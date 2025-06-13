@@ -28,7 +28,7 @@ export function useCopyToClipboard({
             setTimeout(() => {
                 setIsCopied(false);
             }, timeout);
-        }, console.error);
+        }, console.log);
     };
 
     return { isCopied, copyToClipboard };

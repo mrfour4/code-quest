@@ -24,7 +24,7 @@ export const NewDocButton = () => {
                     toast.success("Document created");
                 },
                 onError: (error) => {
-                    console.error("Error creating document:", error);
+                    console.log("Error creating document:", error);
                     toast.error("Error creating document");
                 },
             },

@@ -68,7 +68,7 @@ export const FormPublishDocument = ({ documentId, onClose }: Props) => {
             {
                 onError(error) {
                     toast.error(`Failed to publish document`);
-                    console.error("Error publishing document:", error);
+                    console.log("Error publishing document:", error);
                 },
                 onSuccess() {
                     toast.success("Document published successfully.");

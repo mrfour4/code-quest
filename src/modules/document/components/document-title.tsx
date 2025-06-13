@@ -21,7 +21,7 @@ export const DocumentTitle = ({ id, title, canEdit = false }: Props) => {
             { id, title: value },
             {
                 onError(err) {
-                    console.error("Error updating document title", err);
+                    console.log("Error updating document title", err);
                     toast.error("Error updating document title");
                 },
                 onSettled() {

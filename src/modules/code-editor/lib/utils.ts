@@ -121,7 +121,7 @@ export function highlightDiff(output: string, expected: string) {
 
         return { outputHighlighted, expectedHighlighted };
     } catch (err) {
-        console.error("Invalid JSON input");
+        console.log("Invalid JSON input");
         return { output, expected };
     }
 }
