@@ -9,7 +9,7 @@ import {
 import { useMemo } from "react";
 import { Avatar } from "./avatar";
 
-export const MAX_AVATARS = 1;
+export const MAX_AVATARS = 5;
 
 export const Avatars = () => {
     const self = useSelf();
